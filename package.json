@@ -1,0 +1,29 @@
+{
+  "name": "signr-chrome",
+  "version": "0.0.0",
+  "description": "Hello world chrome extension using gmail.js",
+  "main": "main.js",
+  "dependencies": {
+    "gulp": "~3.8.11",
+    "gulp-bower": "~0.0.10",
+    "bower": "~1.4.1"
+  },
+  "devDependencies": {
+    "gulp": "~3.8.11",
+    "gulp-coffee": "~2.3.1",
+    "gulp-replace": "^0.5.3",
+    "gulp-util": "~3.0.4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:upfluence/signr-chrome.git"
+  },
+  "bugs": {
+    "url": "https://github.com/upfluence/signr-chrome/issues"
+  }
+}

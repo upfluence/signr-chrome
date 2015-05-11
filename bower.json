@@ -1,0 +1,19 @@
+{
+  "name": "signr-chrome",
+  "version": "0.0.0",
+  "authors": [
+    "Alexis Montagne <alexis.montagne@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "gmail.js": "KartikTalwar/gmail.js#master"
+  }
+}
