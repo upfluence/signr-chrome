@@ -22,23 +22,18 @@ fetchSnippet = (callback) ->
 
 appendSignature = ->
   gmail.dom.composes().forEach (c) ->
-    console.log "eachCompose", c
-
-    fetchSnippet( (snippet) ->
+    fetchSnippet (snippet) ->
       setTimeout( ->
         if c.dom('body').find('.gmail_signature').find('#signr-snippet').html() == undefined
           c.dom('body').find('.gmail_signature').append(snippet)
       , 500)
-    )
+
 
 main = ->
   gmail = new Gmail()
 
-  gmail.observe.on 'compose', (obj) ->
-    console.log "onCompose", obj
-    appendSignature()
+  gmail.observe.on 'compose', (obj) -> appendSignature()
 
-  console.log 'Hello,', gmail.get.user_email()
   appendSignature()
 
 refresh main
