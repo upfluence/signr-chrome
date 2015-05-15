@@ -3,10 +3,10 @@
   "version": "0.0.5",
   "description": "Push your content through your employees’ email signatures",
   "content_scripts": [
-      {
-        "matches": ["https://mail.google.com/*"],
-        "js": ["content.js"]
-      }
+    {
+      "matches": ["https://mail.google.com/*"],
+      "js": ["content.js"]
+    }
   ],
   "web_accessible_resources": [
     "bower_components/jquery/dist/jquery.min.js",
@@ -14,5 +14,10 @@
     "bower_components/gmail.js/src/gmail.js",
     "dist/main.js"
   ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
   "manifest_version": 2
 }
