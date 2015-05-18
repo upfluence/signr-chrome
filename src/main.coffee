@@ -8,17 +8,36 @@ refresh = (f) ->
   else
     f()
 
+
+getUserInfo = () ->
+  email = gmail.get.user_email()
+  name = null
+  gmail.get.loggedin_accounts().forEach (a) ->
+    if a.email == email
+      name = a.name
+
+  picture = $(
+    "#gb > div.gb_6b.gb_0c > div.gb_e.gb_0c.gb_r.gb_Zc.gb_pa > div.gb_ba.gb_0c.gb_r > div.gb_p.gb_ea.gb_0c.gb_r > div.gb_fa.gb_s.gb_0c.gb_r > a > span"
+  ).css('background-image').slice(4, -1).replace("s64-c/", "")
+
+  {
+    picture: picture,
+    email: email,
+    name: name
+  }
+
 fetchSnippet = (callback) ->
   console.log 'fetching ..'
   if currentSnippet
     callback(currentSnippet.template)
   else
-    $.getJSON(
-     "#{apiEndpoint}/snippet?email=#{encodeURIComponent(gmail.get.user_email())}",
-      (res) ->
-        currentSnippet = res
-        callback(currentSnippet.template)
-    )
+    $.ajax
+      dataType: 'json',
+      url: "#{apiEndpoint}/snippet",
+      data: getUserInfo()
+      success: (data) ->
+        currentSnippet = data
+        callback(data.template)
 
 appendSignature = ->
   gmail.dom.composes().forEach (c) ->
