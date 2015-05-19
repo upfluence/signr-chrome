@@ -43,7 +43,9 @@ appendSignature = ->
   gmail.dom.composes().forEach (c) ->
     fetchSnippet (snippet) ->
       setTimeout( ->
-        if c.dom('body').find('.gmail_signature').find('#signr-snippet').html() == undefined
+        if c.dom('body')
+            .find('.gmail_signature')
+            .find('div[style*="border-color:#deabe"]').html() == undefined
           c.dom('body').find('.gmail_signature').append(snippet)
       , 500)
 
