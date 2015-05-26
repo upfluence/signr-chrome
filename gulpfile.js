@@ -32,7 +32,7 @@ gulp.task('watch', function() {
 
 gulp.task('default', ['bower', 'template', 'watch'], function() {});
 
-gulp.task('package', shell.task([
+gulp.task('package', ['bower', 'template'], shell.task([
   'crxmake --pack-extension=./ ./contrib/signr-chrome.pem'
 ]));
 
