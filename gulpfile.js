@@ -3,7 +3,11 @@ var bower = require('gulp-bower');
 var coffee = require('gulp-coffee');
 var gutil = require('gulp-util');
 var replace = require('gulp-replace');
+var shell = require('gulp-shell');
 var fs = require('fs');
+
+var manifest = require('./manifest.json')
+
 gulp.task('template', ['coffee'], function() {
   gulp.src(
     fs.readdirSync('./tmp').map(function(p) { return './tmp/' + p; })
@@ -27,3 +31,13 @@ gulp.task('watch', function() {
 });
 
 gulp.task('default', ['bower', 'template', 'watch'], function() {});
+
+gulp.task('package', ['bower', 'template'], shell.task([
+  'crxmake --pack-extension=./ ./contrib/signr-chrome.pem'
+]));
+
+gulp.task('release', shell.task([
+  'hub release create -a signr-chrome.crx -m "signr chrome plugin" v' + manifest.version
+]));
+
+gulp.task('new_release', ['package', 'release'], function() {});
