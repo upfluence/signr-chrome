@@ -33,11 +33,9 @@ gulp.task('watch', function() {
 gulp.task('default', ['bower', 'template', 'watch'], function() {});
 
 gulp.task('package', ['bower', 'template'], shell.task([
-  'crxmake --pack-extension=./ ./contrib/signr-chrome.pem'
+  'crxmake --pack-extension=./ --pack-extension-key=./contrib/signr-chrome.pem'
 ]));
 
 gulp.task('release', ['package'], shell.task([
   'hub release create -a signr-chrome.crx -m "signr chrome plugin" v' + manifest.version
 ]));
-
-gulp.task('new_release', ['package', 'release']);

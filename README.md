@@ -13,4 +13,4 @@ Still easy :
 * make sure you have hub command line tool and crxmake command line utilities setup and available in your `$PATH`.
 * Get the .pem file and put it into the ./contrib directory (./contrib/signr-chrome.pem)
 * increment version in manifest.json
-* create a new release by using `gulp new_release`
+* create a new release by using `gulp release`
