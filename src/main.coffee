@@ -10,7 +10,7 @@ OVERLAY_STYLE =
   'background-color': 'rgba(255, 255, 255, 0.8)'
   'z-index': '9999'
 
-CALL_TO_ACTION = "<div id='call-to-action'>You are currently not registered to signr, <a href='#{apiEndpoint}?run=true'>click here</a> to register and enjoy Signr !</div>"
+CALL_TO_ACTION = "<div id='call-to-action'>You are currently not registered to signr, <a href='#{apiEndpoint}?run=true'>click here</a> to register and enjoy Signr ! Then reload your page :)</div>"
 CALL_TO_ACTION_STYLE =
   'text-align': 'center',
   'height': '100%',
