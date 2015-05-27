@@ -1,5 +1,6 @@
 apiEndpoint = "API_ENDPOINT"
 
+OVERLAY_ITEM = '<div id="signr-call-to-action"></div>'
 OVERLAY_STYLE =
   'position': 'fixed',
   'top': '0',
@@ -34,22 +35,21 @@ extractUserInfos = ->
 
   {
     picture: extractUserPicture(),
-    email: email,
+    primary: email,
     aliases: extactEmailAliases(),
     name: name
   }
 
 isEnabled = (user_infos, onSuccess, onError, onComplete) ->
-  onError()
-  #$.ajax
-    #dataType: 'json',
-    #url: "#{apiEndpoint}/plugin/enable",
-    #method: 'POST',
-    #data: JSON.stringify(user_infos),
-    #timemout: 500,
-    #success: onSuccess,
-    #error: onError,
-    #complete: onComplete
+  $.ajax
+    dataType: 'json',
+    url: "#{apiEndpoint}/plugin/enable",
+    method: 'POST',
+    data: user_infos,
+    timemout: 500,
+    success: onSuccess,
+    error: onError,
+    complete: onComplete
 
 
 fetchSnippet = (callback) ->
