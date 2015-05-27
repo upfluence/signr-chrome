@@ -1,4 +1,21 @@
 apiEndpoint = "API_ENDPOINT"
+
+OVERLAY_ITEM = '<div id="signr-overlay"></div>'
+OVERLAY_STYLE =
+  'position': 'fixed',
+  'top': '0',
+  'left': '0',
+  'width': '100%',
+  'height': '100%',
+  'background-color': 'rgba(255, 255, 255, 0.8)'
+  'z-index': '9999'
+
+CALL_TO_ACTION = "<div id='call-to-action'><p>You are currently not registered to Signr, <a href='#{apiEndpoint}?run=true'>click here</a> to register and use it !</p><p>Then reload your page and enjoy !</p><p>Or you can <a id='signr-optout' href='#'>hide</a> this message</p></div>"
+CALL_TO_ACTION_STYLE =
+  'text-align': 'center',
+  'height': '100%',
+  'margin': '10%'
+
 currentSnippet = null
 gmail = null
 
@@ -8,33 +25,44 @@ refresh = (f) ->
   else
     f()
 
+extractUserPicture = ->
+  item = $('.gbii')
+  unless item.empty() then item.css('background-image') else null
 
-getUserInfo = () ->
+extactEmailAliases = ->
+  gmail.compose.start_compose()
+  $.makeArray($('.J-N.HX').map(-> $(@).attr('value')))
+
+extractUserInfos = ->
   email = gmail.get.user_email()
   name = null
   gmail.get.loggedin_accounts().forEach (a) ->
-    if a.email == email
-      name = a.name
-
-  picture = $(
-    "#gb > div.gb_6b.gb_0c > div.gb_e.gb_0c.gb_r.gb_Zc.gb_pa > div.gb_ba.gb_0c.gb_r > div.gb_p.gb_ea.gb_0c.gb_r > div.gb_fa.gb_s.gb_0c.gb_r > a > span"
-  ).css('background-image').slice(4, -1).replace("s64-c/", "")
+    name = a.name if a.email == email
 
   {
-    picture: picture,
-    email: email,
+    picture: extractUserPicture(),
+    primary: email,
+    aliases: extactEmailAliases(),
     name: name
   }
 
+isEnabled = (user_infos, onSuccess, onError) ->
+  $.ajax
+    dataType: 'json',
+    url: "#{apiEndpoint}/plugin/enable",
+    method: 'POST',
+    data: user_infos,
+    timemout: 5000,
+    success: onSuccess,
+    error: onError
+
 fetchSnippet = (callback) ->
-  console.log 'fetching ..'
   if currentSnippet
     callback(currentSnippet.template)
   else
     $.ajax
-      dataType: 'json',
-      url: "#{apiEndpoint}/snippet",
-      data: getUserInfo()
+      url: "#{apiEndpoint}/plugin/snippet",
+      timeout: 5000,
       success: (data) ->
         currentSnippet = data
         callback(data.template)
@@ -49,12 +77,29 @@ appendSignature = ->
           c.dom('body').find('.gmail_signature').append(snippet)
       , 500)
 
+activateSignr = ->
+  gmail.observe.on 'compose', -> appendSignature()
+  appendSignature()
+
+displayCallToAction= ->
+  overlay = $(OVERLAY_ITEM)
+  overlay.css(OVERLAY_STYLE)
+  callToAction = $(CALL_TO_ACTION)
+  callToAction.css(CALL_TO_ACTION_STYLE)
+  overlay.append(callToAction)
+  overlay.appendTo(document.body)
+  $('#signr-optout').click((event)->
+    event.preventDefault()
+    overlay.remove()
+  )
 
 main = ->
   gmail = new Gmail()
-
-  gmail.observe.on 'compose', (obj) -> appendSignature()
-
-  appendSignature()
+  user_infos = extractUserInfos()
+  isEnabled(
+    user_infos,
+    activateSignr,
+    displayCallToAction
+  )
 
 refresh main
