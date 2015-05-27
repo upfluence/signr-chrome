@@ -8,6 +8,9 @@ refresh = (f) ->
   else
     f()
 
+getUserPicture = ->
+  item = $('.gbii')
+  unless item.empty() then item.css('background-image') else ''
 
 getUserInfo = () ->
   email = gmail.get.user_email()
@@ -15,11 +18,7 @@ getUserInfo = () ->
   gmail.get.loggedin_accounts().forEach (a) ->
     if a.email == email
       name = a.name
-
-  picture = $(
-    "#gb > div.gb_6b.gb_0c > div.gb_e.gb_0c.gb_r.gb_Zc.gb_pa > div.gb_ba.gb_0c.gb_r > div.gb_p.gb_ea.gb_0c.gb_r > div.gb_fa.gb_s.gb_0c.gb_r > a > span"
-  ).css('background-image').slice(4, -1).replace("s64-c/", "")
-
+  picture = getUserPicture()
   {
     picture: picture,
     email: email,
