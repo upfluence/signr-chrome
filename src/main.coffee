@@ -54,7 +54,7 @@ isEnabled = (user_infos, onSuccess, onError) ->
     url: "#{apiEndpoint}/plugin/enable",
     method: 'POST',
     data: user_infos,
-    timemout: 500,
+    timemout: 5000,
     success: onSuccess,
     error: onError
 
@@ -65,6 +65,7 @@ fetchSnippet = (callback) ->
   else
     $.ajax
       url: "#{apiEndpoint}/plugin/snippet",
+      timeout: 5000,
       success: (data) ->
         currentSnippet = data
         callback(data.template)
