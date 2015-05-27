@@ -1,6 +1,6 @@
 apiEndpoint = "API_ENDPOINT"
 
-OVERLAY_ITEM = '<div id="signr-call-to-action"></div>'
+OVERLAY_ITEM = '<div id="signr-overlay"></div>'
 OVERLAY_STYLE =
   'position': 'fixed',
   'top': '0',
@@ -9,6 +9,12 @@ OVERLAY_STYLE =
   'height': '100%',
   'background-color': 'rgba(255, 255, 255, 0.8)'
   'z-index': '9999'
+
+CALL_TO_ACTION = "<div id='call-to-action'>You are currently not registered to signr, <a href='#{apiEndpoint}?run=true'>click here</a> to register and enjoy Signr !</div>"
+CALL_TO_ACTION_STYLE =
+  'text-align': 'center',
+  'height': '100%',
+  'margin-top': '25%'
 
 currentSnippet = null
 gmail = null
@@ -40,7 +46,7 @@ extractUserInfos = ->
     name: name
   }
 
-isEnabled = (user_infos, onSuccess, onError, onComplete) ->
+isEnabled = (user_infos, onSuccess, onError) ->
   $.ajax
     dataType: 'json',
     url: "#{apiEndpoint}/plugin/enable",
@@ -48,8 +54,7 @@ isEnabled = (user_infos, onSuccess, onError, onComplete) ->
     data: user_infos,
     timemout: 500,
     success: onSuccess,
-    error: onError,
-    complete: onComplete
+    error: onError
 
 
 fetchSnippet = (callback) ->
@@ -77,8 +82,11 @@ activateSignr = ->
   appendSignature()
 
 displayCallToAction= ->
-  overlay = $('<div id="signr-call-to-action"></div>')
+  overlay = $(OVERLAY_ITEM)
   overlay.css(OVERLAY_STYLE)
+  callToAction = $(CALL_TO_ACTION)
+  callToAction.css(CALL_TO_ACTION_STYLE)
+  overlay.append(callToAction)
   overlay.appendTo(document.body)
 
 main = ->
