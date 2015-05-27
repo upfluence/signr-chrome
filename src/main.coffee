@@ -1,4 +1,5 @@
 apiEndpoint = "API_ENDPOINT"
+
 currentSnippet = null
 gmail = null
 
@@ -8,32 +9,45 @@ refresh = (f) ->
   else
     f()
 
-getUserPicture = ->
+extractUserPicture = ->
   item = $('.gbii')
-  unless item.empty() then item.css('background-image') else ''
+  unless item.empty() then item.css('background-image') else null
 
-getUserInfo = () ->
+extactEmailAliases = ->
+  gmail.compose.start_compose()
+  $.makeArray($('.J-N.HX').map(-> $(@).attr('value')))
+
+extractUserInfos = ->
   email = gmail.get.user_email()
   name = null
   gmail.get.loggedin_accounts().forEach (a) ->
-    if a.email == email
-      name = a.name
-  picture = getUserPicture()
+    name = a.name if a.email == email
+
   {
-    picture: picture,
+    picture: extractUserPicture(),
     email: email,
+    aliases: extactEmailAliases(),
     name: name
   }
 
+isEnabled = (user_infos, onSuccess, onFailure, onComplete) ->
+  $.ajax
+    dataType: 'json',
+    url: "#{apiEndpoint}/plugin/enable",
+    method: 'POST',
+    data: JSON.stringify(user_infos),
+    success: onSuccess,
+    failure: onFailure,
+    complete: onComplete
+
+
 fetchSnippet = (callback) ->
-  console.log 'fetching ..'
   if currentSnippet
     callback(currentSnippet.template)
   else
     $.ajax
       dataType: 'json',
-      url: "#{apiEndpoint}/snippet",
-      data: getUserInfo()
+      url: "#{apiEndpoint}/plugin/snippet",
       success: (data) ->
         currentSnippet = data
         callback(data.template)
@@ -48,12 +62,20 @@ appendSignature = ->
           c.dom('body').find('.gmail_signature').append(snippet)
       , 500)
 
+activateSignr = ->
+  gmail.observe.on 'compose', -> appendSignature()
+  appendSignature()
+
+displayCallToAction= ->
+  console.log('HEY CALL TO ACTION')
 
 main = ->
   gmail = new Gmail()
-
-  gmail.observe.on 'compose', (obj) -> appendSignature()
-
-  appendSignature()
+  user_infos = extractUserInfos()
+  isEnabled(
+    user_infos,
+    activateSignr,
+    displayCallToAction
+  )
 
 refresh main
