@@ -10,13 +10,11 @@ OVERLAY_STYLE =
   'background-color': 'rgba(255, 255, 255, 0.8)'
   'z-index': '9999'
 
-CALL_TO_ACTION = "<div id='call-to-action'><p>You are currently not registered to signr, <a href='#{apiEndpoint}?run=true'>click here</a> to register and use Signr !</p><p>Then reload your page and enjoy !</p><p>Or you can <a id='signr-optout' href='#'>hide</a> this message</p></div>"
+CALL_TO_ACTION = "<div id='call-to-action'><p>You are currently not registered to Signr, <a href='#{apiEndpoint}?run=true'>click here</a> to register and use it !</p><p>Then reload your page and enjoy !</p><p>Or you can <a id='signr-optout' href='#'>hide</a> this message</p></div>"
 CALL_TO_ACTION_STYLE =
   'text-align': 'center',
   'height': '100%',
-  'margin-left': '10%',
-  'margin-right': '10%',
-  'margin-top': '25%'
+  'margin': '10%'
 
 currentSnippet = null
 gmail = null
