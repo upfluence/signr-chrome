@@ -1,5 +1,14 @@
 apiEndpoint = "API_ENDPOINT"
 
+OVERLAY_STYLE =
+  'position': 'fixed',
+  'top': '0',
+  'left': '0',
+  'width': '100%',
+  'height': '100%',
+  'background-color': 'rgba(255, 255, 255, 0.8)'
+  'z-index': '9999'
+
 currentSnippet = null
 gmail = null
 
@@ -30,15 +39,17 @@ extractUserInfos = ->
     name: name
   }
 
-isEnabled = (user_infos, onSuccess, onFailure, onComplete) ->
-  $.ajax
-    dataType: 'json',
-    url: "#{apiEndpoint}/plugin/enable",
-    method: 'POST',
-    data: JSON.stringify(user_infos),
-    success: onSuccess,
-    failure: onFailure,
-    complete: onComplete
+isEnabled = (user_infos, onSuccess, onError, onComplete) ->
+  onError()
+  #$.ajax
+    #dataType: 'json',
+    #url: "#{apiEndpoint}/plugin/enable",
+    #method: 'POST',
+    #data: JSON.stringify(user_infos),
+    #timemout: 500,
+    #success: onSuccess,
+    #error: onError,
+    #complete: onComplete
 
 
 fetchSnippet = (callback) ->
@@ -46,7 +57,6 @@ fetchSnippet = (callback) ->
     callback(currentSnippet.template)
   else
     $.ajax
-      dataType: 'json',
       url: "#{apiEndpoint}/plugin/snippet",
       success: (data) ->
         currentSnippet = data
@@ -67,7 +77,9 @@ activateSignr = ->
   appendSignature()
 
 displayCallToAction= ->
-  console.log('HEY CALL TO ACTION')
+  overlay = $('<div id="signr-call-to-action"></div>')
+  overlay.css(OVERLAY_STYLE)
+  overlay.appendTo(document.body)
 
 main = ->
   gmail = new Gmail()
