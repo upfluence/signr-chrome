@@ -24,6 +24,8 @@ gulp.task('template', ['coffee'], function() {
     fs.readdirSync('./tmp').map(function(p) { return './tmp/' + p; })
   ).pipe(replace(
     'API_ENDPOINT', process.env.API_ENDPOINT || 'http://localhost:3000'
+  )).pipe(replace(
+    'APP_ENDPOINT', process.env.APP_ENDPOINT || 'http://localhost:4200'
   )).pipe(gulp.dest('./dist/'));
 });
 
