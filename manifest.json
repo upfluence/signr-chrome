@@ -10,9 +10,8 @@
   ],
   "web_accessible_resources": [
     "bower_components/jquery/dist/jquery.min.js",
-    "bower_components/jquery/dist/jquery.min.map",
     "bower_components/gmail.js/src/gmail.js",
-    "dist/main.js"
+    "main.js"
   ],
   "icons": {
     "16": "icons/icon16.png",

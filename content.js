@@ -8,5 +8,5 @@ g.src = chrome.extension.getURL('bower_components/gmail.js/src/gmail.js');
 (document.head || document.documentElement).appendChild(g);
 
 var s = document.createElement('script');
-s.src = chrome.extension.getURL('dist/main.js');
+s.src = chrome.extension.getURL('main.js');
 (document.head || document.documentElement).appendChild(s);
