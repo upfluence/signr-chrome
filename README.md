@@ -4,7 +4,7 @@
 
 Easy:
 * Just download the latest release [HERE](https://github.com/upfluence/signr-chrome/releases)
-* Open chrome extensions page [HERE](chrome://extensions)
+* Open chrome extensions page `chrome://extensions`
 * Drag n drop dowloaded file (signr-chrome.crx)
 
 ### How to release a new version ?
