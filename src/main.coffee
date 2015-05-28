@@ -77,7 +77,7 @@ appendSignature = ->
       setTimeout( ->
         if c.dom('body')
             .find('.gmail_signature')
-            .find('div[style*="border-color:#deabe"]').html() == undefined
+            .find('div[style*="border-color:#deadbe"]').html() == undefined
           c.dom('body').find('.gmail_signature').append(snippet)
       , 500)
 
