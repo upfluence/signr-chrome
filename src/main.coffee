@@ -19,6 +19,7 @@ CALL_TO_ACTION_STYLE =
 
 currentSnippet = null
 gmail = null
+user_infos = null
 
 refresh = (f) ->
   if /in/.test(document.readyState) || undefined == Gmail
@@ -43,7 +44,7 @@ extractUserInfos = ->
   {
     picture: extractUserPicture(),
     primary: email,
-    aliases: extactEmailAliases(),
+    aliases: extactEmailAliases() || [],
     name: name
   }
 
@@ -64,6 +65,8 @@ fetchSnippet = (callback) ->
     $.ajax
       url: "#{apiEndpoint}/plugin/snippet",
       timeout: 5000,
+      data:
+        email: user_infos.primary
       success: (data) ->
         currentSnippet = data
         callback(data.template)
