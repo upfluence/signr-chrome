@@ -17,6 +17,8 @@ CALL_TO_ACTION_STYLE =
   'height': '100%',
   'margin': '10%'
 
+SIGNATURE_ITEM = "<div class='gmail_signature'></div>"
+
 currentSnippet = null
 gmail = null
 user_infos = null
@@ -75,6 +77,9 @@ appendSignature = ->
   gmail.dom.composes().forEach (c) ->
     fetchSnippet (snippet) ->
       setTimeout( ->
+        if c.dom('body').find('.gmail_signature').length == 0
+          c.dom('body').append(SIGNATURE_ITEM)
+
         if c.dom('body')
             .find('.gmail_signature')
             .find('div[style*="border-color:#deadbe"]').html() == undefined
