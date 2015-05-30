@@ -9,7 +9,7 @@ var fs = require('fs');
 
 var manifest = require('./manifest.json')
 
-var filesToDeploy = [
+var resources = [
   "icons/icon16.png",
   "icons/icon48.png",
   "icons/icon128.png",
@@ -51,7 +51,7 @@ gulp.task('clean', function() {
 })
 
 gulp.task('package', ['template'], function() {
-  gulp.src(filesToDeploy, {base: './'})
+  gulp.src(resources, {base: './'})
       .pipe(gulp.dest('dist'))
       .pipe(shell([
         'crxmake --pack-extension=./dist --extension-output="signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem'
