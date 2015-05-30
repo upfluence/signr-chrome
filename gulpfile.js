@@ -5,6 +5,7 @@ var gutil = require('gulp-util');
 var replace = require('gulp-replace');
 var shell = require('gulp-shell');
 var clean = require('gulp-clean');
+var concat = require('gulp-concat');
 var fs = require('fs');
 
 var manifest = require('./manifest.json')
@@ -19,23 +20,20 @@ var resources = [
   "./manifest.json"
 ]
 
-gulp.task('template', ['coffee'], function() {
+gulp.task('template', function() {
   gulp.src(
-    fs.readdirSync('./tmp').map(function(p) { return './tmp/' + p; })
-  ).pipe(replace(
+    './src/*.coffee'
+  ).pipe(coffee({bare: true})).on('error', gutil.log)
+   .pipe(replace(
     'API_ENDPOINT', process.env.API_ENDPOINT || 'http://localhost:3000'
   )).pipe(replace(
     'APP_ENDPOINT', process.env.APP_ENDPOINT || 'http://localhost:4200'
-  )).pipe(gulp.dest('./dist/'));
+  )).pipe(concat('main.js'))
+    .pipe(gulp.dest('./dist/'));
 });
 
 gulp.task('bower', function() {
   bower();
-});
-
-gulp.task('coffee', function() {
-  gulp.src('./src/*.coffee').pipe(coffee({bare: true})).on('error', gutil.log)
-  .pipe(gulp.dest('./tmp/'));
 });
 
 gulp.task('watch', function() {
