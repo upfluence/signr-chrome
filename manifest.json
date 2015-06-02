@@ -5,8 +5,13 @@
   "content_scripts": [
     {
       "matches": ["https://mail.google.com/*"],
-      "js": ["gmail.js"]
+      "js": ["content-gmail.js"]
     }
+  ],
+  "web_accessible_resources": [
+    "bower_components/gmail.js/src/gmail.js",
+    "bower_components/jquery/dist/jquery.min.js",
+    "app/signr-gmail.js"
   ],
   "icons": {
     "16": "icons/icon16.png",

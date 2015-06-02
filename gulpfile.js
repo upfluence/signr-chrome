@@ -16,13 +16,15 @@ var pathmodify_mapping = [
 ]
 
 var entrypoints = [
-  'src/content_script/gmail.coffee'
+  'src/content_script/signr-gmail.coffee'
 ]
 
 var assets = [
   "icons/icon16.png",
   "icons/icon48.png",
   "icons/icon128.png",
+  "bower_components/gmail.js/src/gmail.js",
+  "content-gmail.js",
   "manifest.json"
 ]
 
@@ -38,21 +40,9 @@ gulp.task('template', function() {
     .bundle()
     .pipe(source(path.basename(file, '.coffee') + '.js'))
     .pipe(buffer())
-    .pipe(gulp.dest('dist/'))
-
+    .pipe(gulp.dest('dist/app'))
   })
 })
-
-//gulp.task('template', function() {
-//gulp.src(
-//'src/*.coffee'
-//).pipe(coffee({bare: true})).on('error', gutil.log)
-//.pipe(replace(
-//'API_ENDPOINT', process.env.API_ENDPOINT || 'http://localhost:3000'
-//)).pipe(replace(
-//'APP_ENDPOINT', process.env.APP_ENDPOINT || 'http://localhost:4200'
-//)).pipe(gulp.dest('dist/'));
-//});
 
 gulp.task('watch', ['package'], function() {
   gulp.watch('src/**/*.coffee', ['template']);
