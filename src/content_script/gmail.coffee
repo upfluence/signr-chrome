@@ -1,4 +1,4 @@
-signr = require('app/module/signr-backend')
+signr = require('app/module/signr')
 
 user_infos = email: 'toto@tata.com'
 
