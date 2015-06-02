@@ -16,7 +16,7 @@ var pathmodify_mapping = [
 ]
 
 var entrypoints = [
-  'src/content_script/signr-gmail.coffee'
+  'src/app/signr-gmail.coffee'
 ]
 
 var assets = [
