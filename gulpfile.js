@@ -1,24 +1,46 @@
-var gulp = require('gulp');
-var bower = require('gulp-bower');
-var coffee = require('gulp-coffee');
-var gutil = require('gulp-util');
-var replace = require('gulp-replace');
-var shell = require('gulp-shell');
-var clean = require('gulp-clean');
-var concat = require('gulp-concat');
-var fs = require('fs');
+var gulp = require('gulp'),
+    path = require('path'),
+    del = require('del'),
+    bower = require('gulp-bower'),
+    coffee = require('gulp-coffee'),
+    gutil = require('gulp-util'),
+    replace = require('gulp-replace'),
+    shell = require('gulp-shell'),
+    fs = require('fs'),
+    browserify = require('browserify'),
+    pathmodify = require('pathmodify'),
+    source = require('vinyl-source-stream'),
+    buffer = require('vinyl-buffer');
 
-var manifest = require('./manifest.json')
+var manifest = require('./manifest.json');
+
+var pathmodify_mapping = [
+  pathmodify.mod.dir('app',path.join(__dirname, 'src'))
+]
+
+var entrypoints = [
+  'src/content_scripts/gmail.coffee'
+]
 
 var resources = [
   "icons/icon16.png",
   "icons/icon48.png",
   "icons/icon128.png",
-  "bower_components/jquery/dist/jquery.min.js",
-  "bower_components/gmail.js/src/gmail.js",
-  "content.js",
   "manifest.json"
 ]
+
+gulp.task('javascript', function() {
+ browserify({
+    entries: entrypoints,
+    extensions: ['.coffee']
+  })
+  .plugin(pathmodify(), { mods: pathmodify_mapping })
+  .transform('coffeeify')
+  .bundle()
+  .pipe(source('app.js'))
+  .pipe(buffer())
+  .pipe(gulp.dest('./dist/'))
+})
 
 gulp.task('template', function() {
   gulp.src(
@@ -28,8 +50,7 @@ gulp.task('template', function() {
     'API_ENDPOINT', process.env.API_ENDPOINT || 'http://localhost:3000'
   )).pipe(replace(
     'APP_ENDPOINT', process.env.APP_ENDPOINT || 'http://localhost:4200'
-  )).pipe(concat('main.js'))
-    .pipe(gulp.dest('dist/'));
+  )).pipe(gulp.dest('dist/'));
 });
 
 gulp.task('bower', function() {
@@ -44,8 +65,7 @@ gulp.task('watch', ['package'], function() {
 gulp.task('default', ['bower', 'watch'], function() {});
 
 gulp.task('clean', function() {
-  gulp.src('dist/*', {read: false}).pipe(clean())
-  gulp.src('*.crx', {read: false}).pipe(clean())
+  del(['dist/*', '*.crx'])
 })
 
 gulp.task('package', ['template'], function() {
