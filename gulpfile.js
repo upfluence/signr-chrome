@@ -22,14 +22,14 @@ var entrypoints = [
   'src/content_scripts/gmail.coffee'
 ]
 
-var resources = [
+var assets = [
   "icons/icon16.png",
   "icons/icon48.png",
   "icons/icon128.png",
   "manifest.json"
 ]
 
-gulp.task('javascript', function() {
+gulp.task('template', function() {
  browserify({
     entries: entrypoints,
     extensions: ['.coffee']
@@ -37,29 +37,24 @@ gulp.task('javascript', function() {
   .plugin(pathmodify(), { mods: pathmodify_mapping })
   .transform('coffeeify')
   .bundle()
-  .pipe(source('app.js'))
+  .pipe(source('gmail.js'))
   .pipe(buffer())
-  .pipe(gulp.dest('./dist/'))
+  .pipe(gulp.dest('dist/'))
 })
 
-gulp.task('template', function() {
-  gulp.src(
-    'src/*.coffee'
-  ).pipe(coffee({bare: true})).on('error', gutil.log)
-   .pipe(replace(
-    'API_ENDPOINT', process.env.API_ENDPOINT || 'http://localhost:3000'
-  )).pipe(replace(
-    'APP_ENDPOINT', process.env.APP_ENDPOINT || 'http://localhost:4200'
-  )).pipe(gulp.dest('dist/'));
-});
-
-gulp.task('bower', function() {
-  bower();
-});
+//gulp.task('template', function() {
+  //gulp.src(
+    //'src/*.coffee'
+  //).pipe(coffee({bare: true})).on('error', gutil.log)
+   //.pipe(replace(
+    //'API_ENDPOINT', process.env.API_ENDPOINT || 'http://localhost:3000'
+  //)).pipe(replace(
+    //'APP_ENDPOINT', process.env.APP_ENDPOINT || 'http://localhost:4200'
+  //)).pipe(gulp.dest('dist/'));
+//});
 
 gulp.task('watch', ['package'], function() {
-  gulp.watch('src/*.coffee', ['template']);
-  gulp.watch('bower.json', ['bower']);
+  gulp.watch('src/**/*.coffee', ['template']);
 });
 
 gulp.task('default', ['bower', 'watch'], function() {});
@@ -69,7 +64,7 @@ gulp.task('clean', function() {
 })
 
 gulp.task('package', ['template'], function() {
-  gulp.src(resources, {base: './'})
+  gulp.src(assets, {base: '.'})
       .pipe(gulp.dest('dist'))
       .pipe(shell([
         'crxmake --pack-extension=./dist --extension-output="signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem'
