@@ -1,6 +1,7 @@
 var gulp = require('gulp'),
   path = require('path'),
   del = require('del'),
+  bower = require('gulp-bower'),
   gutil = require('gulp-util'),
   shell = require('gulp-shell'),
   browserify = require('browserify'),
@@ -44,8 +45,13 @@ gulp.task('template', function() {
   })
 })
 
+gulp.task('bower', function() {
+  bower();
+})
+
 gulp.task('watch', ['package'], function() {
   gulp.watch('src/**/*.coffee', ['template']);
+  gulp.watch('bower.json', ['bower']);
 });
 
 gulp.task('default', ['watch'], function() {});
