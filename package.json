@@ -9,13 +9,15 @@
     "bower": "~1.4.1"
   },
   "devDependencies": {
+    "browserify": "^10.2.3",
     "gulp": "~3.8.11",
     "gulp-clean": "^0.3.1",
     "gulp-coffee": "~2.3.1",
     "gulp-concat": "^2.5.2",
     "gulp-replace": "^0.5.3",
     "gulp-shell": "^0.4.1",
-    "gulp-util": "~3.0.4"
+    "gulp-util": "~3.0.4",
+    "vinyl-source-stream": "^1.1.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
