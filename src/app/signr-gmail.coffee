@@ -1,5 +1,5 @@
 signr = require('app/module/signr')
-gmail_page = require('app/module/gmail')
+gmail = require('app/module/gmail')
 cto = require('app/module/call_to_action')
 
 refresh = (f) ->
@@ -11,11 +11,11 @@ refresh = (f) ->
     f()
 
 main = ->
-  user_infos =  gmail_page.extractUserInfos()
-  signr.isEnabled(user_infos).then(
-    debugger
-  ).fail(->
-    cto.display()
+  user =  gmail.extractUserInfos()
+  signr.isEnabled(user).then(->
+    gmail.enableInjection(user)
+  ).fail( ->
+    cto.displayCallToAction()
   )
 
 refresh main

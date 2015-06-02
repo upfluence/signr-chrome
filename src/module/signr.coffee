@@ -1,12 +1,12 @@
 $ = require('jquery')
 
 API_ENDPOINT = process.env.API_ENDPOINT
-APP_ENDPOINT = process.env.APP_ENDPOINT
 
 module.exports =
   isEnabled: (user_infos) ->
     $.ajax
       dataType: 'json',
+      method: 'POST',
       url: "#{API_ENDPOINT}/plugin/enable",
       data: user_infos,
       timeout: 5000
