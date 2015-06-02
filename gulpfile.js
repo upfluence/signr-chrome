@@ -1,13 +1,13 @@
 var gulp = require('gulp'),
-    path = require('path'),
-    del = require('del'),
-    gutil = require('gulp-util'),
-    shell = require('gulp-shell'),
-    browserify = require('browserify'),
-    pathmodify = require('pathmodify'),
-    envify = require('envify'),
-    source = require('vinyl-source-stream'),
-    buffer = require('vinyl-buffer');
+  path = require('path'),
+  del = require('del'),
+  gutil = require('gulp-util'),
+  shell = require('gulp-shell'),
+  browserify = require('browserify'),
+  pathmodify = require('pathmodify'),
+  envify = require('envify'),
+  source = require('vinyl-source-stream'),
+  buffer = require('vinyl-buffer');
 
 var manifest = require('./manifest.json');
 
@@ -16,7 +16,7 @@ var pathmodify_mapping = [
 ]
 
 var entrypoints = [
-  'src/content_scripts/gmail.coffee'
+  'src/content_script/gmail.coffee'
 ]
 
 var assets = [
@@ -27,28 +27,31 @@ var assets = [
 ]
 
 gulp.task('template', function() {
- browserify({
-    entries: entrypoints,
-    extensions: ['.coffee']
+  entrypoints.forEach(function(file) {
+    browserify({
+      entries: entrypoints,
+      extensions: ['.coffee']
+    })
+    .plugin(pathmodify(), { mods: pathmodify_mapping })
+    .transform('coffeeify')
+    .transform('envify')
+    .bundle()
+    .pipe(source(path.basename(file, '.coffee') + '.js'))
+    .pipe(buffer())
+    .pipe(gulp.dest('dist/'))
+
   })
-  .plugin(pathmodify(), { mods: pathmodify_mapping })
-  .transform('coffeeify')
-  .transform('envify')
-  .bundle()
-  .pipe(source('gmail.js'))
-  .pipe(buffer())
-  .pipe(gulp.dest('dist/'))
 })
 
 //gulp.task('template', function() {
-  //gulp.src(
-    //'src/*.coffee'
-  //).pipe(coffee({bare: true})).on('error', gutil.log)
-   //.pipe(replace(
-    //'API_ENDPOINT', process.env.API_ENDPOINT || 'http://localhost:3000'
-  //)).pipe(replace(
-    //'APP_ENDPOINT', process.env.APP_ENDPOINT || 'http://localhost:4200'
-  //)).pipe(gulp.dest('dist/'));
+//gulp.src(
+//'src/*.coffee'
+//).pipe(coffee({bare: true})).on('error', gutil.log)
+//.pipe(replace(
+//'API_ENDPOINT', process.env.API_ENDPOINT || 'http://localhost:3000'
+//)).pipe(replace(
+//'APP_ENDPOINT', process.env.APP_ENDPOINT || 'http://localhost:4200'
+//)).pipe(gulp.dest('dist/'));
 //});
 
 gulp.task('watch', ['package'], function() {
@@ -63,10 +66,10 @@ gulp.task('clean', function() {
 
 gulp.task('package', ['template'], function() {
   gulp.src(assets, {base: '.'})
-      .pipe(gulp.dest('dist'))
-      .pipe(shell([
-        'crxmake --pack-extension=./dist --extension-output="signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem'
-      ]))
+  .pipe(gulp.dest('dist'))
+  .pipe(shell([
+    'crxmake --pack-extension=./dist --extension-output="signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem'
+  ]))
 })
 
 gulp.task('release', ['package'], shell.task([
