@@ -5,6 +5,7 @@ var gulp = require('gulp'),
     shell = require('gulp-shell'),
     browserify = require('browserify'),
     pathmodify = require('pathmodify'),
+    envify = require('envify'),
     source = require('vinyl-source-stream'),
     buffer = require('vinyl-buffer');
 
@@ -32,6 +33,7 @@ gulp.task('template', function() {
   })
   .plugin(pathmodify(), { mods: pathmodify_mapping })
   .transform('coffeeify')
+  .transform('envify')
   .bundle()
   .pipe(source('gmail.js'))
   .pipe(buffer())
@@ -53,7 +55,7 @@ gulp.task('watch', ['package'], function() {
   gulp.watch('src/**/*.coffee', ['template']);
 });
 
-gulp.task('default', ['bower', 'watch'], function() {});
+gulp.task('default', ['watch'], function() {});
 
 gulp.task('clean', function() {
   del(['dist/*', '*.crx'])
