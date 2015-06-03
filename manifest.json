@@ -1,17 +1,16 @@
 {
   "name": "Signr",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Push your content through your employees’ email signatures",
   "content_scripts": [
     {
       "matches": ["https://mail.google.com/*"],
-      "js": ["content.js"]
+      "js": ["assets/content-gmail.js"]
     }
   ],
   "web_accessible_resources": [
-    "bower_components/jquery/dist/jquery.min.js",
     "bower_components/gmail.js/src/gmail.js",
-    "main.js"
+    "app/signr-gmail.js"
   ],
   "icons": {
     "16": "icons/icon16.png",

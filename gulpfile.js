@@ -1,61 +1,71 @@
-var gulp = require('gulp');
-var bower = require('gulp-bower');
-var coffee = require('gulp-coffee');
-var gutil = require('gulp-util');
-var replace = require('gulp-replace');
-var shell = require('gulp-shell');
-var clean = require('gulp-clean');
-var fs = require('fs');
+var gulp = require('gulp'),
+  path = require('path'),
+  del = require('del'),
+  bower = require('gulp-bower'),
+  gutil = require('gulp-util'),
+  shell = require('gulp-shell'),
+  browserify = require('browserify'),
+  pathmodify = require('pathmodify'),
+  envify = require('envify'),
+  source = require('vinyl-source-stream'),
+  buffer = require('vinyl-buffer');
 
-var manifest = require('./manifest.json')
+var manifest = require('./manifest.json');
 
-var filesToDeploy = [
+var pathmodify_mapping = [
+  pathmodify.mod.dir('app',path.join(__dirname, 'src'))
+]
+
+var entrypoints = [
+  'src/app/signr-gmail.coffee'
+]
+
+var assets = [
   "icons/icon16.png",
   "icons/icon48.png",
   "icons/icon128.png",
-  "./bower_components/jquery/dist/jquery.min.js",
-  "./bower_components/gmail.js/src/gmail.js",
-  "./content.js",
-  "./manifest.json"
+  "bower_components/gmail.js/src/gmail.js",
+  "assets/content-gmail.js",
+  "manifest.json"
 ]
 
-gulp.task('template', ['coffee'], function() {
-  gulp.src(
-    fs.readdirSync('./tmp').map(function(p) { return './tmp/' + p; })
-  ).pipe(replace(
-    'API_ENDPOINT', process.env.API_ENDPOINT || 'http://localhost:3000'
-  )).pipe(replace(
-    'APP_ENDPOINT', process.env.APP_ENDPOINT || 'http://localhost:4200'
-  )).pipe(gulp.dest('./dist/'));
-});
+gulp.task('template', function() {
+  entrypoints.forEach(function(file) {
+    browserify({
+      entries: entrypoints,
+      extensions: ['.coffee']
+    })
+    .plugin(pathmodify(), { mods: pathmodify_mapping })
+    .transform('coffeeify')
+    .transform('envify')
+    .bundle()
+    .pipe(source(path.basename(file, '.coffee') + '.js'))
+    .pipe(buffer())
+    .pipe(gulp.dest('dist/app'))
+  })
+})
 
 gulp.task('bower', function() {
   bower();
+})
+
+gulp.task('watch', ['package'], function() {
+  gulp.watch('src/**/*.coffee', ['template']);
+  gulp.watch('bower.json', ['bower']);
 });
 
-gulp.task('coffee', function() {
-  gulp.src('./src/*.coffee').pipe(coffee({bare: true})).on('error', gutil.log)
-  .pipe(gulp.dest('./tmp/'));
-});
-
-gulp.task('watch', function() {
-  gulp.watch('./src/*.coffee', ['template']);
-  gulp.watch('./bower.json', ['bower']);
-});
-
-gulp.task('default', ['bower', 'template', 'watch'], function() {});
+gulp.task('default', ['watch'], function() {});
 
 gulp.task('clean', function() {
-  gulp.src('./dist/*', {read: false}).pipe(clean())
-  gulp.src('./*.crx', {read: false}).pipe(clean())
+  del(['dist/*', '*.crx'])
 })
 
 gulp.task('package', ['template'], function() {
-  gulp.src(filesToDeploy, {base: './'})
-      .pipe(gulp.dest('dist'))
-      .pipe(shell([
-        'crxmake --pack-extension=./dist --extension-output="signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem'
-      ]))
+  gulp.src(assets, {base: '.'})
+  .pipe(gulp.dest('dist'))
+  .pipe(shell([
+    'crxmake --pack-extension=./dist --extension-output="signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem'
+  ]))
 })
 
 gulp.task('release', ['package'], shell.task([
