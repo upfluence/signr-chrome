@@ -25,7 +25,7 @@ var assets = [
   "icons/icon48.png",
   "icons/icon128.png",
   "bower_components/gmail.js/src/gmail.js",
-  "content-gmail.js",
+  "assets/content-gmail.js",
   "manifest.json"
 ]
 
