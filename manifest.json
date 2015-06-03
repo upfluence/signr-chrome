@@ -10,7 +10,6 @@
   ],
   "web_accessible_resources": [
     "bower_components/gmail.js/src/gmail.js",
-    "bower_components/jquery/dist/jquery.min.js",
     "app/signr-gmail.js"
   ],
   "icons": {
