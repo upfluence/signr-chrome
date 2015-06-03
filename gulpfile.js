@@ -64,7 +64,7 @@ gulp.task('package', ['template'], function() {
   gulp.src(assets, {base: '.'})
   .pipe(gulp.dest('dist'))
   .pipe(shell([
-    'crxmake --pack-extension=./dist --extension-output="signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem'
+    'crxmake --pack-extension=./dist --extension-output="./signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem'
   ]))
 })
 
