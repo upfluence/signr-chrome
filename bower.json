@@ -13,6 +13,6 @@
     "tests"
   ],
   "dependencies": {
-    "gmail.js": "KartikTalwar/gmail.js#master"
+    "gmail.js": "jlevesy/gmail.js#master"
   }
 }
