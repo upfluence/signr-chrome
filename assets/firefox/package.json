@@ -5,5 +5,5 @@
   "id": "jid1-gsAJlMXTaSFiPg",
   "author": "Upfluence",
   "license": "MPL 2.0",
-  "version": "0.0.11"
+  "version": "%VERSION%"
 }

@@ -1,6 +1,6 @@
 {
   "name": "Signr",
-  "version": "0.0.11",
+  "version": "%VERSION%",
   "description": "Push your content through your employees email signatures",
   "content_scripts": [
     {

@@ -5,13 +5,14 @@ var gulp = require('gulp'),
   gutil = require('gulp-util'),
   shell = require('gulp-shell'),
   dest = require('gulp-dest'),
+  replace = require('gulp-replace'),
   browserify = require('browserify'),
   pathmodify = require('pathmodify'),
   envify = require('envify'),
   source = require('vinyl-source-stream'),
   buffer = require('vinyl-buffer');
 
-var manifest = require('./assets/chrome/manifest.json');
+var version = '0.0.12'
 
 var pathmodify_mapping = [
   pathmodify.mod.dir('app',path.join(__dirname, 'src'))
@@ -54,7 +55,7 @@ gulp.task('bower', function() {
   bower();
 })
 
-gulp.task('watch', ['package-chrome'], function() {
+gulp.task('watch', ['package'], function() {
   gulp.watch('src/**/*.coffee', ['template']);
   gulp.watch('bower.json', ['bower']);
 });
@@ -68,6 +69,7 @@ gulp.task('clean', function() {
 gulp.task('package-chrome', ['template'], function() {
   gulp.src(chrome_assets)
     .pipe(dest('.'))
+    .pipe(replace('%VERSION%', version))
     .pipe(gulp.dest('dist/chrome'))
 
   gulp.src(assets, {base: '.'})
@@ -88,6 +90,7 @@ gulp.task('package-firefox', ['template'], function() {
 
   gulp.src('assets/firefox/package.json')
     .pipe(dest('.'))
+    .pipe(replace('%VERSION%', version))
     .pipe(gulp.dest('dist/firefox'))
     .pipe(shell([
       'cfx xpi --pkgdir=./dist/firefox'
@@ -97,5 +100,5 @@ gulp.task('package-firefox', ['template'], function() {
 gulp.task('package', ['package-chrome', 'package-firefox'])
 
 gulp.task('release', ['package'], shell.task([
-  'hub release create -a signr-chrome.crx  -a signr-firefox.xpi -m "signr plugin" v' + manifest.version
+  'hub release create -a signr-chrome.crx  -a signr-firefox.xpi -m "signr plugin" v' + version
 ]));
