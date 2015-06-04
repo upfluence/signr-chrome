@@ -44,6 +44,7 @@ gulp.task('template', function() {
     .transform('coffeeify')
     .transform('envify')
     .bundle()
+    .on('error', gutil.log)
     .pipe(source(path.basename(file, '.coffee') + '.js'))
     .pipe(buffer())
     .pipe(gulp.dest('dist/chrome/app'))
