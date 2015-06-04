@@ -20,7 +20,7 @@ var entrypoints = [
   'src/app/signr-gmail.coffee'
 ]
 
-var assets = [
+var chrome_assets = [
   "icons/icon16.png",
   "icons/icon48.png",
   "icons/icon128.png",
@@ -41,7 +41,8 @@ gulp.task('template', function() {
     .bundle()
     .pipe(source(path.basename(file, '.coffee') + '.js'))
     .pipe(buffer())
-    .pipe(gulp.dest('dist/app'))
+    .pipe(gulp.dest('dist/chrome/app'))
+    .pipe(gulp.dest('dist/firefox/data'))
   })
 })
 
@@ -49,7 +50,7 @@ gulp.task('bower', function() {
   bower();
 })
 
-gulp.task('watch', ['package'], function() {
+gulp.task('watch', ['package-chrome'], function() {
   gulp.watch('src/**/*.coffee', ['template']);
   gulp.watch('bower.json', ['bower']);
 });
@@ -60,11 +61,11 @@ gulp.task('clean', function() {
   del(['dist/*', '*.crx'])
 })
 
-gulp.task('package', ['template'], function() {
-  gulp.src(assets, {base: '.'})
-  .pipe(gulp.dest('dist'))
+gulp.task('package-chrome', ['template'], function() {
+  gulp.src(chrome_assets, {base: '.'})
+  .pipe(gulp.dest('dist/chrome'))
   .pipe(shell([
-    'crxmake --pack-extension=./dist --extension-output="signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem'
+    'crxmake --pack-extension=./dist/chrome --extension-output="signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem'
   ]))
 })
 
