@@ -5,7 +5,7 @@
   "content_scripts": [
     {
       "matches": ["https://mail.google.com/*"],
-      "js": ["assets/content-gmail.js"]
+      "js": ["content-gmail.js"]
     }
   ],
   "web_accessible_resources": [
