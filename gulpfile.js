@@ -4,13 +4,14 @@ var gulp = require('gulp'),
   bower = require('gulp-bower'),
   gutil = require('gulp-util'),
   shell = require('gulp-shell'),
+  dest = require('gulp-dest'),
   browserify = require('browserify'),
   pathmodify = require('pathmodify'),
   envify = require('envify'),
   source = require('vinyl-source-stream'),
   buffer = require('vinyl-buffer');
 
-var manifest = require('./manifest.json');
+var manifest = require('./assets/chrome/manifest.json');
 
 var pathmodify_mapping = [
   pathmodify.mod.dir('app',path.join(__dirname, 'src'))
@@ -24,9 +25,7 @@ var chrome_assets = [
   "icons/icon16.png",
   "icons/icon48.png",
   "icons/icon128.png",
-  "bower_components/gmail.js/src/gmail.js",
-  "assets/content-gmail.js",
-  "manifest.json"
+  "bower_components/gmail.js/src/gmail.js"
 ]
 
 gulp.task('template', function() {
@@ -62,10 +61,14 @@ gulp.task('clean', function() {
 })
 
 gulp.task('package-chrome', ['template'], function() {
+  gulp.src(['assets/chrome/content-gmail.js','assets/chrome/manifest.json'])
+    .pipe(dest('.'))
+    .pipe(gulp.dest('dist/chrome'))
+
   gulp.src(chrome_assets, {base: '.'})
-  .pipe(gulp.dest('dist/chrome'))
-  .pipe(shell([
-    'crxmake --pack-extension=./dist/chrome --extension-output="signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem'
+    .pipe(gulp.dest('dist/chrome'))
+    .pipe(shell([
+      'crxmake --pack-extension=./dist/chrome --extension-output="signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem'
   ]))
 })
 
