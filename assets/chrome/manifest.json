@@ -1,7 +1,7 @@
 {
   "name": "Signr",
   "version": "0.0.11",
-  "description": "Push your content through your employees’ email signatures",
+  "description": "Push your content through your employees email signatures",
   "content_scripts": [
     {
       "matches": ["https://mail.google.com/*"],
