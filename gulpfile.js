@@ -21,11 +21,16 @@ var entrypoints = [
   'src/app/signr-gmail.coffee'
 ]
 
-var chrome_assets = [
+var assets = [
   "icons/icon16.png",
   "icons/icon48.png",
   "icons/icon128.png",
   "bower_components/gmail.js/src/gmail.js"
+]
+
+var chrome_assets = [
+  'assets/chrome/content-gmail.js',
+  'assets/chrome/manifest.json'
 ]
 
 gulp.task('template', function() {
@@ -57,21 +62,40 @@ gulp.task('watch', ['package-chrome'], function() {
 gulp.task('default', ['watch'], function() {});
 
 gulp.task('clean', function() {
-  del(['dist/*', '*.crx'])
+  del(['dist/*', '*.crx', '*.xpi'])
 })
 
 gulp.task('package-chrome', ['template'], function() {
-  gulp.src(['assets/chrome/content-gmail.js','assets/chrome/manifest.json'])
+  gulp.src(chrome_assets)
     .pipe(dest('.'))
     .pipe(gulp.dest('dist/chrome'))
 
-  gulp.src(chrome_assets, {base: '.'})
+  gulp.src(assets, {base: '.'})
     .pipe(gulp.dest('dist/chrome'))
     .pipe(shell([
       'crxmake --pack-extension=./dist/chrome --extension-output="signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem'
   ]))
 })
 
+gulp.task('package-firefox', ['template'], function() {
+  gulp.src(assets)
+    .pipe(dest('.'))
+    .pipe(gulp.dest('dist/firefox/data'))
+
+  gulp.src('assets/firefox/main.js')
+    .pipe(dest('.'))
+    .pipe(gulp.dest('dist/firefox/lib'))
+
+  gulp.src('assets/firefox/package.json')
+    .pipe(dest('.'))
+    .pipe(gulp.dest('dist/firefox'))
+    .pipe(shell([
+      'cfx xpi --pkgdir=./dist/firefox'
+    ]))
+})
+
+gulp.task('package', ['package-chrome', 'package-firefox'])
+
 gulp.task('release', ['package'], shell.task([
-  'hub release create -a signr-chrome.crx -m "signr chrome plugin" v' + manifest.version
+  'hub release create -a signr-chrome.crx  -a signr-firefox.xpi -m "signr plugin" v' + manifest.version
 ]));
