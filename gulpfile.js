@@ -32,7 +32,7 @@ var assets = [
 gulp.task('template', function() {
   entrypoints.forEach(function(file) {
     browserify({
-      entries: entrypoints,
+      entries: file,
       extensions: ['.coffee']
     })
     .plugin(pathmodify(), { mods: pathmodify_mapping })
