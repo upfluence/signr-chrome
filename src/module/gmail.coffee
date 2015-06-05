@@ -10,9 +10,13 @@ extractUserPicture = ->
   item = $('.gbii')
   unless item.empty() then item.css('background-image') else null
 
-extactEmailAliases = ->
-  gmail.compose.start_compose()
-  $.makeArray($('.J-N.HX').map(-> $(@).attr('value')))
+extactEmailAliases = (callback) ->
+  gmail.compose.start_compose() unless gmail.dom.composes().length
+  setTimeout(->
+    callback(
+      $.makeArray($('.J-N.HX').map(-> $(@).attr('value')))
+    )
+  , 100)
 
 injectSnippet = (snippet) ->
   gmail.dom.composes().forEach (c) ->
@@ -28,16 +32,21 @@ injectSnippet = (snippet) ->
 
 module.exports =
   extractUserInfos: ->
-    email = gmail.get.user_email()
-    name = null
-    gmail.get.loggedin_accounts().forEach (a) ->
-      name = a.name if a.email == email
-    {
-      picture: extractUserPicture(),
-      primary: email,
-      aliases: extactEmailAliases() || [],
-      name: name
-    }
+    $.Deferred((defer) ->
+      extactEmailAliases((aliases) ->
+        email = gmail.get.user_email()
+        name = null
+        gmail.get.loggedin_accounts().forEach (a) ->
+          name = a.name if a.email == email
+        defer.resolve({
+          picture: extractUserPicture(),
+          primary: email,
+          aliases: aliases,
+          name: name
+        })
+      )
+    ).promise()
+
 
   enableInjection: (user) ->
     signr.fetchSnippet(user).then((snippet)->
