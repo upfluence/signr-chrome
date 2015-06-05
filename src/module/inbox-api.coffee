@@ -13,6 +13,9 @@ module.exports =
   start_compose: ->
     $('.y.hC').click()
 
+  composes: ->
+    $('.be.k.f')
+
   on_compose: (callback) ->
     $(window.document).bind('DOMNodeInserted', (element) ->
       if $(element.target).find('.be.k.f').length
@@ -21,5 +24,4 @@ module.exports =
 
   aliases: ->
     $.Deferred((defer)->
-       
     ).promise()
