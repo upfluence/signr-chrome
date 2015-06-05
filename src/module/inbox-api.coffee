@@ -15,7 +15,8 @@ module.exports =
 
   on_compose: (callback) ->
     $(window.document).bind('DOMNodeInserted', (element) ->
-      debugger
+      if $(element.target).find('.be.k.f').length
+        callback(element)
     )
 
   aliases: ->
