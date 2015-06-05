@@ -6,6 +6,10 @@
     {
       "matches": ["https://mail.google.com/*"],
       "js": ["assets/content-gmail.js"]
+    },
+    {
+      "matches": ["https://inbox.google.com/*"],
+      "js": ["app/signr-inbox.js"]
     }
   ],
   "web_accessible_resources": [
