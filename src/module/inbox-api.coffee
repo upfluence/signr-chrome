@@ -7,21 +7,24 @@ module.exports =
   email: ->
     $('.gb_E')[0].firstChild.data
 
-  image_url: ->
+  imageUrl: ->
     $('.gbii').css('background-image')
 
-  start_compose: ->
+  startCompose: ->
     $('.y.hC').click()
 
   composes: ->
     $('.be.k.f')
 
-  on_compose: (callback) ->
+  onCompose: (callback) ->
     $(window.document).bind('DOMNodeInserted', (element) ->
       if $(element.target).find('.be.k.f').length
         callback(element)
     )
 
-  aliases: ->
-    $.Deferred((defer)->
-    ).promise()
+  emailAliases:(callback) ->
+    @startCompose() unless @composes().length
+    setTimeout(->
+        callback([])
+      ,100
+    )

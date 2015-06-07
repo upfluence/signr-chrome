@@ -1,6 +1,6 @@
 signr = require('app/module/signr')
 gmail = require('app/module/gmail')
-cto = require('app/module/call_to_action')
+cta = require('app/module/call_to_action')
 
 refresh = (f) ->
   if /in/.test(document.readyState) || undefined == Gmail
@@ -15,7 +15,7 @@ main = ->
     signr.isEnabled(user).then(->
       gmail.enableInjection(user)
     ).fail(->
-      cto.display()
+      cta.display()
     )
   )
 

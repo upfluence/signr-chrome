@@ -1,16 +1,11 @@
-cto = require('app/module/call_to_action')
-inbox = require('app/module/inbox-api')
+cta = require('app/module/call_to_action')
+signr = require('app/module/signr')
+inbox = require('app/module/inbox')
 
-
-inbox.on_compose(->
-  console.log('HEY HEY HEY')
+inbox.extractUserInfos().then((user) ->
+  signr.isEnabled(user).then(->
+    console.log('HEY YOU ARE A SIGNR SENDER')
+  ).fail(->
+    cta.display()
+  )
 )
-
-inbox.start_compose()
-
-setTimeout( ->
-    console.log("HEY, COMPOSES #{inbox.composes().length}")
-  , 1000
-)
-
-cto.display()
