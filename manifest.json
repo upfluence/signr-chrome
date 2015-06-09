@@ -16,6 +16,9 @@
     "bower_components/gmail.js/src/gmail.js",
     "app/signr-gmail.js"
   ],
+  "permissions": [
+    "https://signr.io/*"
+  ],
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
