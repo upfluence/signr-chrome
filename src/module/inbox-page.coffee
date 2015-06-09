@@ -2,7 +2,6 @@ $ = require('jquery')
 
 module.exports =
   name: ->
-    debugger
     $('.gb_D')[0].firstChild.data
 
   email: ->

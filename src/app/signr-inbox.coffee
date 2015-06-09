@@ -1,6 +1,7 @@
 cta = require('app/module/call_to_action')
 signr = require('app/module/signr')
-inbox = require('app/module/inbox')
+core = require('app/module/core')
+page = require('app/module/inbox-page')
 
 main = ->
   core.extractUserInfos(page).then((user) ->
@@ -11,5 +12,6 @@ main = ->
     ).fail(->
       cta.display()
     )
+  )
 
 setTimeout(main, 500)

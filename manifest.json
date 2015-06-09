@@ -5,16 +5,12 @@
   "content_scripts": [
     {
       "matches": ["https://mail.google.com/*"],
-      "js": ["assets/content-gmail.js"]
+      "js": ["app/signr-gmail.js"]
     },
     {
       "matches": ["https://inbox.google.com/*"],
       "js": ["app/signr-inbox.js"]
     }
-  ],
-  "web_accessible_resources": [
-    "bower_components/gmail.js/src/gmail.js",
-    "app/signr-gmail.js"
   ],
   "permissions": [
     "https://signr.io/*"
