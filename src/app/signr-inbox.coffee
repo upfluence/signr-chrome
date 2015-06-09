@@ -3,12 +3,13 @@ signr = require('app/module/signr')
 inbox = require('app/module/inbox')
 
 main = ->
-  inbox.extractUserInfos().then((user) ->
+  core.extractUserInfos(page).then((user) ->
     signr.isEnabled(user).then(->
-      inbox.enableInjection(user)
+      signr.fetchSnippet(user).then((snippet)->
+        core.enableInjection(snippet, page)
+      )
     ).fail(->
       cta.display()
     )
-  )
 
 setTimeout(main, 500)

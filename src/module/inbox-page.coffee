@@ -2,6 +2,7 @@ $ = require('jquery')
 
 module.exports =
   name: ->
+    debugger
     $('.gb_D')[0].firstChild.data
 
   email: ->
@@ -40,3 +41,9 @@ module.exports =
         )
       , 100
     )
+
+  injectSnippet: (element, snippet) ->
+    if $(element).find('.aR')
+                 .find('div[style*="border-color:#deadbe"]')
+                 .html() == undefined
+      $(element).find('.aR').append(snippet.template)
