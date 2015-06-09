@@ -17,7 +17,7 @@ module.exports =
     $('.be.k.f')
 
   onCompose: (callback) ->
-    $(window.document).bind('DOMNodeInserted', (element) ->
+    $(document).bind('DOMNodeInserted', (element) ->
       if $(element.target).find('.be.k.f').length
         callback(element)
     )
@@ -25,6 +25,18 @@ module.exports =
   emailAliases:(callback) ->
     @startCompose() unless @composes().length
     setTimeout(->
-        callback([])
-      ,100
+        elt = $('div.kC')[0]
+
+        # Trigger mouseDown event from: dropdown to render alias emails in dom.
+        # We should probably gather those datas one time and set in in
+        # localStorage
+        if elt
+          evt = document.createEvent('MouseEvents')
+          evt.initEvent('mousedown', true, false)
+          elt.dispatchEvent(evt)
+
+        callback(
+          $.makeArray($('.do.fy').map(->$(@).html()))
+        )
+      , 100
     )
