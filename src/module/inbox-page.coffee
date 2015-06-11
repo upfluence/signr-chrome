@@ -1,15 +1,6 @@
 $ = require('jquery')
 
 module.exports =
-  name: ->
-    $('.gb_D')[0].firstChild.data
-
-  email: ->
-    $('.gb_E')[0].firstChild.data
-
-  imageUrl: ->
-    $('.gbii').css('background-image')
-
   startCompose: ->
     $('.y.hC').click()
 
@@ -24,9 +15,9 @@ module.exports =
 
   emailAliases:(callback) ->
     @startCompose() unless @composes().length
-    setTimeout(->
+    setTimeout(
+      ->
         elt = $('div.kC')[0]
-
         # Trigger mouseDown event from: dropdown to render alias emails in dom.
         # We should probably gather those datas one time and set in in
         # localStorage
@@ -35,8 +26,18 @@ module.exports =
           evt.initEvent('mousedown', true, false)
           elt.dispatchEvent(evt)
 
-        callback(
-          $.makeArray($('.do.fy').map(->$(@).html()))
+        setTimeout(
+          ->
+            callback(
+              $.makeArray($('.do.fy').map(->$(@).html()))
+            )
+          , 1000
         )
-      , 100
+      , 1000
     )
+
+  injectSnippet: (element, snippet) ->
+    if $(element).find('.aR')
+                 .find('div[style*="border-color:#deadbe"]')
+                 .html() == undefined
+      $(element).find('.aR').append(snippet.template)

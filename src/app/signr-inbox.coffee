@@ -1,14 +1,7 @@
 cta = require('app/module/call_to_action')
 signr = require('app/module/signr')
-inbox = require('app/module/inbox')
+page = require('app/module/inbox-page')
+menus = require('app/module/google-menus')
+app = require('app/module/app')
 
-main = ->
-  inbox.extractUserInfos().then((user) ->
-    signr.isEnabled(user).then(->
-      inbox.enableInjection(user)
-    ).fail(->
-      cta.display()
-    )
-  )
-
-setTimeout(main, 500)
+app.execute_when_ready(-> app.run(page, menus, signr, cta))

@@ -13,6 +13,5 @@
     "tests"
   ],
   "dependencies": {
-    "gmail.js": "KartikTalwar/gmail.js#master"
   }
 }
