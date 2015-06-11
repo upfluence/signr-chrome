@@ -1,6 +1,6 @@
-signr = require('app/module/signr')
 cta = require('app/module/call_to_action')
-page = require('app/module/gmail-page')
+signr = require('app/module/signr')
+page = require('app/module/inbox-page')
 menus = require('app/module/google-menus')
 app = require('app/module/app')
 

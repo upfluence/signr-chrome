@@ -1,5 +1,6 @@
 var gulp = require('gulp'),
   path = require('path'),
+  exec = require('child_process').exec,
   del = require('del'),
   bower = require('gulp-bower'),
   gutil = require('gulp-util'),
@@ -19,25 +20,20 @@ var pathmodify_mapping = [
 ]
 
 var entrypoints = [
-  'src/app/signr-gmail.coffee'
+  'src/app/signr-gmail.coffee',
+  'src/app/signr-inbox.coffee'
 ]
 
 var assets = [
   "icons/icon16.png",
   "icons/icon48.png",
   "icons/icon128.png",
-  "bower_components/gmail.js/src/gmail.js"
-]
-
-var chrome_assets = [
-  'assets/chrome/content-gmail.js',
-  'assets/chrome/manifest.json'
 ]
 
 gulp.task('template', function() {
   entrypoints.forEach(function(file) {
     browserify({
-      entries: entrypoints,
+      entries: file,
       extensions: ['.coffee']
     })
     .plugin(pathmodify(), { mods: pathmodify_mapping })
@@ -64,7 +60,7 @@ gulp.task('watch', ['package'], function() {
 gulp.task('default', ['watch'], function() {});
 
 gulp.task('clean', function() {
-  del(['dist/*', '*.crx', '*.xpi'])
+  del(['dist/*', '*.crx', '*.zip','*.xpi'])
 })
 
 gulp.task('package-chrome', ['template'], function() {
@@ -74,10 +70,9 @@ gulp.task('package-chrome', ['template'], function() {
     .pipe(gulp.dest('dist/chrome'))
 
   gulp.src(assets, {base: '.'})
-    .pipe(gulp.dest('dist/chrome'))
-    .pipe(shell([
-      'crxmake --pack-extension=./dist/chrome --extension-output="signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem'
-  ]))
+      .pipe(gulp.dest('dist'))
+  exec('pushd ./dist; zip -r ../signr-chrome.zip .; popd')
+  exec('crxmake --pack-extension=./dist --extension-output="./signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem')
 })
 
 gulp.task('package-firefox', ['template'], function() {

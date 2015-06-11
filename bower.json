@@ -13,6 +13,5 @@
     "tests"
   ],
   "dependencies": {
-    "gmail.js": "jlevesy/gmail.js#master"
   }
 }
