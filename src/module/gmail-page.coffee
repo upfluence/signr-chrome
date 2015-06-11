@@ -28,7 +28,8 @@ module.exports =
         callback(
           $.makeArray($('.J-N.HX').map(-> $(@).attr('value')))
         )
-      , 500)
+      , 500
+    )
 
   injectSnippet: (element, snippet) ->
     setTimeout(->
@@ -39,6 +40,6 @@ module.exports =
             .find('.gmail_signature')
             .find('div[style*="border-color:#deadbe"]').html() == undefined
           $(element).find('.gmail_signature').append(snippet.template)
-      ,500
+      , 1000
     )
 

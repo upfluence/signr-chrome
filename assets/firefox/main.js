@@ -1,7 +1,12 @@
 var self = require("sdk/self");
 var mod = require("sdk/page-mod");
 
-var pageMod = mod.PageMod({
+var gmail_mod = mod.PageMod({
   include: "https://mail.google.com/*",
-  contentScriptFile: [self.data.url('gmail.js'), self.data.url('signr-gmail.js')]
+  contentScriptFile: [self.data.url('signr-gmail.js')]
+})
+
+var inbox_mod = mod.PageMod({
+  include: "https://inbox.google.com/*",
+  contentScriptFile: [self.data.url('signr-inbox.js')]
 })

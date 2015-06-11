@@ -13,7 +13,7 @@ var gulp = require('gulp'),
   source = require('vinyl-source-stream'),
   buffer = require('vinyl-buffer');
 
-var version = '0.0.12'
+var version = '0.0.14'
 
 var pathmodify_mapping = [
   pathmodify.mod.dir('app',path.join(__dirname, 'src'))
@@ -64,15 +64,16 @@ gulp.task('clean', function() {
 })
 
 gulp.task('package-chrome', ['template'], function() {
-  gulp.src(chrome_assets)
+  gulp.src('assets/chrome/manifest.json')
     .pipe(dest('.'))
     .pipe(replace('%VERSION%', version))
     .pipe(gulp.dest('dist/chrome'))
 
   gulp.src(assets, {base: '.'})
-      .pipe(gulp.dest('dist'))
-  exec('pushd ./dist; zip -r ../signr-chrome.zip .; popd')
-  exec('crxmake --pack-extension=./dist --extension-output="./signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem')
+    .pipe(gulp.dest('dist/chrome'))
+
+  exec('pushd ./dist/chrome; zip -r ../../signr-chrome.zip .; popd')
+  exec('crxmake --pack-extension=./dist/chrome --extension-output="./signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem')
 })
 
 gulp.task('package-firefox', ['template'], function() {
@@ -88,13 +89,12 @@ gulp.task('package-firefox', ['template'], function() {
     .pipe(dest('.'))
     .pipe(replace('%VERSION%', version))
     .pipe(gulp.dest('dist/firefox'))
-    .pipe(shell([
-      'cfx xpi --pkgdir=./dist/firefox'
-    ]))
+
+  exec('cfx xpi --pkgdir=./dist/firefox')
 })
 
 gulp.task('package', ['package-chrome', 'package-firefox'])
 
 gulp.task('release', ['package'], shell.task([
-  'hub release create -a signr-chrome.crx  -a signr-firefox.xpi -m "signr plugin" v' + version
+  'hub release create -a signr-chrome.crx -a signr-chrome.zip -a signr-firefox.xpi -m "signr plugin" v' + version
 ]));
