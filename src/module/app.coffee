@@ -1,12 +1,12 @@
 $ = require('jquery')
 
-extractUserInfos = (page) ->
+extractUserInfos = (page, menus) ->
   $.Deferred((defer) ->
     page.emailAliases((aliases)->
       defer.resolve(
-        picture: page.imageUrl(),
-        primary: page.email(),
-        name: page.name()
+        picture: menus.imageUrl(),
+        primary: menus.email(),
+        name: menus.name()
         aliases: aliases
       )
     )
@@ -26,8 +26,8 @@ module.exports =
     else
       callback()
 
-  run: (page, signr, cta) ->
-    extractUserInfos(page).then((user) ->
+  run: (page, menus, signr, cta) ->
+    extractUserInfos(page, menus).then((user) ->
       signr.isEnabled(user).then(->
         signr.fetchSnippet(user).then((snippet)->
           enableInjection(snippet, page)

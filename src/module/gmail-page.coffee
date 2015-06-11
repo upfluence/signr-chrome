@@ -3,15 +3,6 @@ $ = require('jquery')
 SIGNATURE_ITEM = "<div class='gmail_signature'></div>"
 
 module.exports =
-  name: ->
-    $('.gb_D')[0].firstChild.data
-
-  email: ->
-    $('.gb_E')[0].firstChild.data
-
-  imageUrl: ->
-    $('.gbii').css('background-image')
-
   startCompose: ->
     elt = $('.T-I.J-J5-Ji.T-I-KE.L3')[0]
     if elt
