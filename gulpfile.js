@@ -1,5 +1,6 @@
 var gulp = require('gulp'),
   path = require('path'),
+  exec = require('child_process').exec,
   del = require('del'),
   bower = require('gulp-bower'),
   gutil = require('gulp-util'),
@@ -9,7 +10,6 @@ var gulp = require('gulp'),
   envify = require('envify'),
   source = require('vinyl-source-stream'),
   buffer = require('vinyl-buffer');
-
 var manifest = require('./manifest.json');
 
 var pathmodify_mapping = [
@@ -58,15 +58,14 @@ gulp.task('watch', ['package'], function() {
 gulp.task('default', ['watch'], function() {});
 
 gulp.task('clean', function() {
-  del(['dist/*', '*.crx'])
+  del(['dist/*', '*.crx', '*.zip'])
 })
 
 gulp.task('package', ['template'], function() {
   gulp.src(assets, {base: '.'})
-  .pipe(gulp.dest('dist'))
-  .pipe(shell([
-    'crxmake --pack-extension=./dist --extension-output="./signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem'
-  ]))
+      .pipe(gulp.dest('dist'))
+  exec('pushd ./dist; zip -r ../signr-chrome.zip .; popd')
+  exec('crxmake --pack-extension=./dist --extension-output="./signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem')
 })
 
 gulp.task('release', ['package'], shell.task([
