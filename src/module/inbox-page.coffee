@@ -15,9 +15,9 @@ module.exports =
 
   emailAliases:(callback) ->
     @startCompose() unless @composes().length
-    setTimeout(->
+    setTimeout(
+      ->
         elt = $('div.kC')[0]
-
         # Trigger mouseDown event from: dropdown to render alias emails in dom.
         # We should probably gather those datas one time and set in in
         # localStorage
@@ -26,10 +26,14 @@ module.exports =
           evt.initEvent('mousedown', true, false)
           elt.dispatchEvent(evt)
 
-        callback(
-          $.makeArray($('.do.fy').map(->$(@).html()))
+        setTimeout(
+          ->
+            callback(
+              $.makeArray($('.do.fy').map(->$(@).html()))
+            )
+          , 1000
         )
-      , 100
+      , 1000
     )
 
   injectSnippet: (element, snippet) ->

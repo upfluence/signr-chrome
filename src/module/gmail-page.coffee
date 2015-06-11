@@ -28,7 +28,7 @@ module.exports =
         callback(
           $.makeArray($('.J-N.HX').map(-> $(@).attr('value')))
         )
-      , 100)
+      , 500)
 
   injectSnippet: (element, snippet) ->
     setTimeout(->
