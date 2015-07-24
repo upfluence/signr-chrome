@@ -28,8 +28,8 @@ module.exports =
 
   run: (page, menus, signr, cta) ->
     extractUserInfos(page, menus).then((user) ->
-      signr.isEnabled(user).then(->
-        signr.fetchSnippet(user).then((snippet)->
+      signr.isEnabled(user).done(->
+        signr.fetchSnippet(user).done((snippet)->
           enableInjection(snippet, page)
         ).fail(->
           # Catch silenty, no snippets are available
