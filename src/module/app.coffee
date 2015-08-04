@@ -2,7 +2,7 @@ $ = require('jquery')
 
 extractUserInfos = (page, menus) ->
   $.Deferred((defer) ->
-    page.emailAliases((aliases)->
+    page.emailAliases((aliases) ->
       defer.resolve(
         picture: menus.imageUrl(),
         primary: menus.email(),
@@ -28,8 +28,8 @@ module.exports =
 
   run: (page, menus, signr, cta) ->
     extractUserInfos(page, menus).then((user) ->
-      signr.isEnabled(user).done(->
-        signr.fetchSnippet(user).done((snippet)->
+      signr.isEnabled(user).done( ->
+        signr.fetchSnippet(user).done((snippet) ->
           enableInjection(snippet, page)
         ).fail(->
           # Catch silenty, no snippets are available
