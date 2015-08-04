@@ -63,33 +63,43 @@ gulp.task('clean', function() {
   del(['dist/*', '*.crx', '*.zip','*.xpi'])
 })
 
-gulp.task('package-chrome', ['template'], function() {
+gulp.task('manifest-chrome', function() {
   gulp.src('assets/chrome/manifest.json')
     .pipe(dest('.'))
     .pipe(replace('%VERSION%', version))
     .pipe(gulp.dest('dist/chrome'))
-
-  gulp.src(assets, {base: '.'})
-    .pipe(gulp.dest('dist/chrome'))
-
-  exec('pushd ./dist/chrome; zip -r ../../signr-chrome.zip .; popd')
-  exec('crxmake --pack-extension=./dist/chrome --extension-output="./signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem')
 })
 
-gulp.task('package-firefox', ['template'], function() {
-  gulp.src(assets)
+gulp.task('assets-chrome', ['template', 'manifest-chrome'], function() {
+  gulp.src(assets, {base: '.'})
+    .pipe(gulp.dest('dist/chrome'))
+})
+
+gulp.task('firefox-data', function() {
+   gulp.src(assets)
     .pipe(dest('.'))
     .pipe(gulp.dest('dist/firefox/data'))
+})
 
+gulp.task('firefox-lib', function() {
   gulp.src('assets/firefox/main.js')
     .pipe(dest('.'))
     .pipe(gulp.dest('dist/firefox/lib'))
+})
 
+gulp.task('assets-firefox', ['template', 'firefox-data', 'firefox-lib'], function() {
   gulp.src('assets/firefox/package.json')
     .pipe(dest('.'))
     .pipe(replace('%VERSION%', version))
     .pipe(gulp.dest('dist/firefox'))
+})
 
+gulp.task('package-chrome', ['assets-chrome'], function() {
+  exec('pushd ./dist/chrome; zip -r ../../signr-chrome.zip .; popd')
+  exec('crxmake --pack-extension=./dist/chrome --extension-output="./signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem')
+})
+
+gulp.task('package-firefox', ['assets-firefox'], function() {
   exec('cfx xpi --pkgdir=./dist/firefox')
 })
 
