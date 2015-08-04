@@ -13,7 +13,8 @@
     }
   ],
   "permissions": [
-    "https://signr.io/*"
+    "https://signr.io/*",
+    "https://staging.signr.io/*"
   ],
   "icons": {
     "16": "icons/icon16.png",
