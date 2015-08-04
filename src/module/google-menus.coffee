@@ -9,5 +9,3 @@ module.exports =
 
   imageUrl: ->
     $('.gbii').css('background-image')
-
-

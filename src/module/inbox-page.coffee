@@ -1,5 +1,7 @@
 $ = require('jquery')
 
+SIGNATURE_ITEM = "<br clear='all'><div><br></div>--<br><div class='signr_signature'></div>"
+
 module.exports =
   startCompose: ->
     $('.y.hC').click()
@@ -40,4 +42,5 @@ module.exports =
     if $(element).find('.aR')
                  .find('div[style*="border-color:#deadbe"]')
                  .html() == undefined
-      $(element).find('.aR').append(snippet.template)
+      $(element).find('.aR').append(SIGNATURE_ITEM)
+      $(element).find('.signr_signature').append(snippet.template)
