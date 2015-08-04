@@ -94,8 +94,11 @@ gulp.task('assets-firefox', ['template', 'firefox-data', 'firefox-lib'], functio
     .pipe(gulp.dest('dist/firefox'))
 })
 
-gulp.task('package-chrome', ['assets-chrome'], function() {
+gulp.task('package-chrome-zip', ['assets-chrome'], function() {
   exec('pushd ./dist/chrome; zip -r ../../signr-chrome.zip .; popd')
+})
+
+gulp.task('package-chrome', ['package-chrome-zip'], function() {
   exec('crxmake --pack-extension=./dist/chrome --extension-output="./signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem')
 })
 
