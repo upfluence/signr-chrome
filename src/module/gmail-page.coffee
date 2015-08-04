@@ -1,6 +1,6 @@
 $ = require('jquery')
 
-SIGNATURE_ITEM = "<div class='gmail_signature'></div>"
+SIGNATURE_ITEM = "<br clear='all'><div><br></div>--<br><div class='gmail_signature'></div>"
 
 module.exports =
   startCompose: ->
@@ -33,8 +33,9 @@ module.exports =
 
   injectSnippet: (element, snippet) ->
     setTimeout(->
-        if $(element).find('.gmail_signature').length == 0
-          $(element).append(SIGNATURE_ITEM)
+        if $(element).find('.gmail_signature').length == 0 &&
+           $(element).find('div[style*="border-color:#deadbe"]').length == 0
+          $(element).find('.Am').append(SIGNATURE_ITEM)
 
         if $(element)
             .find('.gmail_signature')
