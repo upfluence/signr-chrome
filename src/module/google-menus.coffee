@@ -8,4 +8,4 @@ module.exports =
     $('.gb_E')[0].firstChild.data
 
   imageUrl: ->
-    $('.gbii').css('background-image')
+    $('.gbii').css('background-image')[5..-3]
