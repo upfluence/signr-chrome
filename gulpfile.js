@@ -13,7 +13,7 @@ var gulp = require('gulp'),
   source = require('vinyl-source-stream'),
   buffer = require('vinyl-buffer');
 
-var version = '0.0.19'
+var version = '0.0.20'
 
 var pathmodify_mapping = [
   pathmodify.mod.dir('app',path.join(__dirname, 'src'))
@@ -21,7 +21,8 @@ var pathmodify_mapping = [
 
 var entrypoints = [
   'src/app/signr-gmail.coffee',
-  'src/app/signr-inbox.coffee'
+  'src/app/signr-inbox.coffee',
+  'src/app/signr.coffee'
 ]
 
 var assets = [

@@ -4,6 +4,10 @@
   "description": "Push your content through your employees email signatures",
   "content_scripts": [
     {
+      "matches": ["https://staging.signr.io/*", "https://signr.io/*"],
+      "js": ["app/signr.js"]
+    },
+    {
       "matches": ["https://mail.google.com/*"],
       "js": ["app/signr-gmail.js"]
     },
