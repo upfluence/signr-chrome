@@ -1,3 +1,4 @@
+require('app/module/opbeat')
 signr = require('app/module/signr')
 cta = require('app/module/call_to_action')
 page = require('app/module/gmail-page')
