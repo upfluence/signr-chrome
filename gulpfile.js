@@ -41,7 +41,6 @@ gulp.task('template', function() {
     .plugin(pathmodify(), { mods: pathmodify_mapping })
     .transform('coffeeify')
     .transform('envify')
-    .transform('debowerify')
     .bundle()
     .on('error', gutil.log)
     .pipe(source(path.basename(file, '.coffee') + '.js'))

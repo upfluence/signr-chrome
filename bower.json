@@ -13,6 +13,6 @@
     "tests"
   ],
   "dependencies": {
-    "opbeat-js": "https://github.com/vanjacosic/opbeat-js.git"
+    "opbeat-js": "https://github.com/upfluence/opbeat-js.git"
   }
 }
