@@ -122,6 +122,6 @@ gulp.task('release', ['package', 'opbeat-release'], shell.task([
   'hub release create -a signr-chrome.crx -a signr-chrome.zip -a signr-firefox.xpi -m "signr plugin" v' + version
 ]));
 
-gulp.task('ci-release' ['package-chrome', 'opbeat-release'], shell.task[
+gulp.task('ci-release', ['package-chrome', 'opbeat-release'], shell.task[
   'hub release create -a signr-chrome.crx -a signr-chrome.zip -m "signr plugin" v' + version
 ])
