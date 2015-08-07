@@ -101,7 +101,7 @@ gulp.task('package-chrome-zip', ['assets-chrome'], function() {
 })
 
 gulp.task('package-chrome', ['package-chrome-zip'], function() {
-  exec('crxmake --pack-extension=./dist/chrome --extension-output="./signr-chrome.crx" --pack-extension-key=./contrib/signr-chrome.pem')
+  exec('crxmake --pack-extension=./dist/chrome --extension-output="./signr-chrome.crx"')
 })
 
 gulp.task('package-firefox', ['assets-firefox'], function() {
@@ -110,11 +110,18 @@ gulp.task('package-firefox', ['assets-firefox'], function() {
 
 gulp.task('package', ['package-chrome', 'package-firefox'])
 
-gulp.task('release', ['package'], shell.task([
-  'hub release create -a signr-chrome.crx -a signr-chrome.zip -a signr-firefox.xpi -m "signr plugin" v' + version,
+gulp.task('opbeat-release', shell.task([
   'curl https://intake.opbeat.com/api/v1/organizations/9fab231fcf4d4dcd9cd6d8e5ab4a4841/apps/badf3dcff7/releases/ \
     -H "Authorization: Bearer ' + process.env.OPBEAT_BEARER + '" \
     -d rev=`git log -n 1 --pretty=format:%H` \
     -d branch=`git rev-parse --abbrev-ref HEAD` \
     -d status=completed'
+]))
+
+gulp.task('release', ['package', 'opbeat-release'], shell.task([
+  'hub release create -a signr-chrome.crx -a signr-chrome.zip -a signr-firefox.xpi -m "signr plugin" v' + version
 ]));
+
+gulp.task('ci-release' ['package-chrome', 'opbeat-release'], shell.task[
+  'hub release create -a signr-chrome.crx -a signr-chrome.zip -m "signr plugin" v' + version
+])
