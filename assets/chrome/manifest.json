@@ -4,7 +4,7 @@
   "description": "Push your content through your employees email signatures",
   "content_scripts": [
     {
-      "matches": ["https://staging.signr.io/*", "https://signr.io/*", "https://localhost:4200/*"],
+      "matches": ["https://staging.signr.io/*", "https://signr.io/*", "http://localhost:4200/*"],
       "js": ["app/signr.js"]
     },
     {
