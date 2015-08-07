@@ -111,5 +111,10 @@ gulp.task('package-firefox', ['assets-firefox'], function() {
 gulp.task('package', ['package-chrome', 'package-firefox'])
 
 gulp.task('release', ['package'], shell.task([
-  'hub release create -a signr-chrome.crx -a signr-chrome.zip -a signr-firefox.xpi -m "signr plugin" v' + version
+  'hub release create -a signr-chrome.crx -a signr-chrome.zip -a signr-firefox.xpi -m "signr plugin" v' + version,
+  'curl https://intake.opbeat.com/api/v1/organizations/9fab231fcf4d4dcd9cd6d8e5ab4a4841/apps/badf3dcff7/releases/ \
+    -H "Authorization: Bearer ' + process.env.OPBEAT_BEARER + '" \
+    -d rev=`git log -n 1 --pretty=format:%H` \
+    -d branch=`git rev-parse --abbrev-ref HEAD` \
+    -d status=completed'
 ]));
