@@ -1,0 +1,28 @@
+machine:
+  pre:
+  - wget https://github.com/github/hub/releases/download/v2.2.1/hub-linux-amd64-2.2.1.tar.gz
+  - tar xvzf hub-linux-amd64-2.2.1.tar.gz
+  - mv hub-linux-amd64-2.2.1/hub bin/hub
+  - gem install crxmake
+  - npm install -g gulp
+
+dependencies:
+  override:
+    - npm install
+    - bower install
+  cache_directories:
+    - "node_modules"
+    - "bower_components"
+
+test:
+  override:
+    - echo "will come"
+
+deployment:
+  hub:
+    branch: master
+    commands:
+      - gulp ci-release:
+          environment:
+            API_ENDPOINT: https://staging.signr.io
+            APP_ENDPOINT: https://staging.signr.io
