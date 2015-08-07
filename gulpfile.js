@@ -13,10 +13,11 @@ var gulp = require('gulp'),
   source = require('vinyl-source-stream'),
   buffer = require('vinyl-buffer');
 
-var version = '0.0.22'
+var version = '0.0.23'
 
 var pathmodify_mapping = [
-  pathmodify.mod.dir('app',path.join(__dirname, 'src'))
+  pathmodify.mod.dir('app',path.join(__dirname, 'src')),
+  pathmodify.mod.dir('bower_components',path.join(__dirname, 'bower_components'))
 ]
 
 var entrypoints = [
