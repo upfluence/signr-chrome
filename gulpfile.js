@@ -13,7 +13,7 @@ var gulp = require('gulp'),
   source = require('vinyl-source-stream'),
   buffer = require('vinyl-buffer');
 
-var version = '0.0.20'
+var version = '0.0.21'
 
 var pathmodify_mapping = [
   pathmodify.mod.dir('app',path.join(__dirname, 'src'))
