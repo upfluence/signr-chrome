@@ -16,7 +16,8 @@ var gulp = require('gulp'),
 var version = '0.0.22'
 
 var pathmodify_mapping = [
-  pathmodify.mod.dir('app',path.join(__dirname, 'src'))
+  pathmodify.mod.dir('app',path.join(__dirname, 'src')),
+  pathmodify.mod.dir('bower_components',path.join(__dirname, 'bower_components'))
 ]
 
 var entrypoints = [
@@ -40,6 +41,7 @@ gulp.task('template', function() {
     .plugin(pathmodify(), { mods: pathmodify_mapping })
     .transform('coffeeify')
     .transform('envify')
+    .transform('debowerify')
     .bundle()
     .on('error', gutil.log)
     .pipe(source(path.basename(file, '.coffee') + '.js'))
