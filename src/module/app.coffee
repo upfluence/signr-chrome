@@ -1,4 +1,5 @@
 $ = require('jquery')
+Opbeat = require('app/module/opbeat')
 
 extractUserInfos = (page, menus) ->
   $.Deferred((defer) ->
@@ -16,6 +17,21 @@ enableInjection = (snippet, page) ->
   page.onCompose((evt) -> page.injectSnippet(evt.target, snippet))
   page.injectSnippet(element, snippet) for element in page.composes()
 
+_run = (page, menus, signr, cta) ->
+  extractUserInfos(page, menus).then((user) ->
+    Opbeat.client.setUserContext(email: user.primary, name: user.name)
+    signr.isEnabled(user).done( ->
+      signr.fetchSnippet(user).done((snippet) ->
+        enableInjection(snippet, page)
+      ).fail((xhr) ->
+        Opbeat.handleXhrError(xhr)
+      )
+    ).fail((xhr) ->
+      Opbeat.handleXhrError(xhr)
+      cta.display() if xhr.status == 404
+    )
+  )
+
 module.exports =
   execute_when_ready: (callback) ->
     self = @
@@ -27,14 +43,7 @@ module.exports =
       callback()
 
   run: (page, menus, signr, cta) ->
-    extractUserInfos(page, menus).then((user) ->
-      signr.isEnabled(user).done( ->
-        signr.fetchSnippet(user).done((snippet) ->
-          enableInjection(snippet, page)
-        ).fail(->
-          # Catch silenty, no snippets are available
-        )
-      ).fail(->
-        cta.display()
-      )
-    )
+    try
+      _run(page, menus, signr, cta)
+    catch e
+      Opbeat.client.captureException(e.stack)
