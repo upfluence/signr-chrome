@@ -1,11 +1,20 @@
 $ = require('jquery')
 
+safeExtractText = (element) ->
+  if element.length > 0 then element.text() else ""
+
+safeExtractBackgroundImage = (element) ->
+  if element.length > 0 && element.css('background-image')
+    element.css('background-image')[4..-2]
+  else
+    ""
+
 module.exports =
   name: ->
-    $('.gb_D')[0].firstChild.data
+    safeExtractText($('.gb_Ca'))
 
   email: ->
-    $('.gb_E')[0].firstChild.data
+    safeExtractText($('.gb_Da'))
 
   imageUrl: ->
-    $('.gbii').css('background-image')[4..-2]
+    safeExtractBackgroundImage($('.gbii'))
