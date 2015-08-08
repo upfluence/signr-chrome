@@ -121,7 +121,7 @@ gulp.task('opbeat-release', shell.task([
     -d rev=`git log -n 1 --pretty=format:%H` \
     -d branch=`git rev-parse --abbrev-ref HEAD` \
     -d status=completed'
-])),
+]));
 
 gulp.task('release', ['package', 'opbeat-release'], shell.task([
   'hub release create -a signr-chrome.crx -a signr-chrome.zip -a signr-firefox.xpi -m "signr plugin" v' + version
