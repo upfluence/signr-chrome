@@ -5,6 +5,7 @@ machine:
   - mv hub-linux-amd64-2.2.1/hub bin/hub
   - gem install crxmake
   - npm install -g gulp
+  - sudo apt-get update; sudo apt-get install jq
 
 dependencies:
   override:
@@ -26,3 +27,4 @@ deployment:
           environment:
             API_ENDPOINT: https://staging.signr.io
             APP_ENDPOINT: https://staging.signr.io
+      - bash contrib/release-store.sh
