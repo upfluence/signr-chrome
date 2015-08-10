@@ -5,3 +5,9 @@ access_token=`curl -sL "https://accounts.google.com/o/oauth2/token" \
 curl "https://www.googleapis.com/upload/chromewebstore/v1.1/items/$ITEM_ID" \
  -H "Authorization: Bearer $access_token"  -XPUT \
  --data-binary @"`pwd`/signr-chrome.zip"
+
+curl -H "Authorization: Bearer $access_token" \
+     -H "x-goog-api-version: 2" \
+     -H "Content-Length: 0" \
+     -XPOST \
+     "https://www.googleapis.com/upload/chromewebstore/v1.1/items/$ITEM_ID/publish"
