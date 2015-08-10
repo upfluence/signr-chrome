@@ -26,4 +26,5 @@ deployment:
       - gulp ci-release:
           environment:
             API_ENDPOINT: https://staging.signr.io
+            APP_ENDPOINT: https://staging.signr.io
       - bash contrib/release-store.sh
