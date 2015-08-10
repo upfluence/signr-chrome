@@ -7,7 +7,5 @@ curl "https://www.googleapis.com/upload/chromewebstore/v1.1/items/$ITEM_ID" \
  --data-binary @"`pwd`/signr-chrome.zip"
 
 curl -H "Authorization: Bearer $access_token" \
-     -H "x-goog-api-version: 2" \
-     -H "Content-Length: 0" \
      -XPOST \
      "https://www.googleapis.com/upload/chromewebstore/v1.1/items/$ITEM_ID/publish"
