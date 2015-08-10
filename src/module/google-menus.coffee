@@ -1,9 +1,9 @@
 $ = require('jquery')
 Opbeat = require('app/module/opbeat')
 
-NAME_TAGS  = ['.gb_Ca', '.gb_D']
-EMAIL_TAGS = ['.gb_Da', '.gb_E']
-AVATAR_TAGS = ['.gbii']
+NAME_TAGS  = ['.gb_Xa', '.gb_Ca', '.gb_D']
+EMAIL_TAGS = ['.gb_Za', '.gb_Da', '.gb_E']
+AVATAR_TAGS = ['.gb_Da', '.gbii']
 
 extractText = (element) ->
   if element.length > 0 then element.text() else ""
