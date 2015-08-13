@@ -2,6 +2,9 @@
   "name": "Signr",
   "version": "%VERSION%",
   "description": "Push your content through your employees email signatures",
+  "background": {
+    "scripts": ["app/signr-chrome-background.js"]
+  },
   "content_scripts": [
     {
       "matches": ["https://staging.signr.io/*", "https://signr.io/*", "http://localhost:4200/*"],
@@ -17,6 +20,7 @@
     }
   ],
   "permissions": [
+    "tabs",
     "https://signr.io/*",
     "https://staging.signr.io/*"
   ],
