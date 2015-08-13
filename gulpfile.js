@@ -28,29 +28,44 @@ var entrypoints = [
   'src/app/signr.coffee'
 ];
 
+var entrypoints_chrome = [
+  "src/app/signr-chrome-background.coffee"
+]
+
 var assets = [
   "icons/icon16.png",
   "icons/icon48.png",
   "icons/icon128.png",
 ];
 
-gulp.task('template', function() {
-  streams = entrypoints.map(function(file) {
-    return browserify({
-      entries: file,
-      extensions: ['.coffee']
-    })
-    .plugin(pathmodify(), { mods: pathmodify_mapping })
-    .transform('coffeeify')
-    .transform('envify')
-    .bundle()
-    .on('error', gutil.log)
-    .pipe(source(path.basename(file, '.coffee') + '.js'))
-    .pipe(buffer())
-    .pipe(gulp.dest('dist/chrome/app'))
-    .pipe(gulp.dest('dist/firefox/data'))
+function entrypoint_pipeline(file) {
+  return browserify({
+    entries: file,
+    extensions: ['.coffee']
   })
-  return es.merge.apply(null, streams)
+  .plugin(pathmodify(), { mods: pathmodify_mapping })
+  .transform('coffeeify')
+  .transform('envify')
+  .bundle()
+  .on('error', gutil.log)
+  .pipe(source(path.basename(file, '.coffee') + '.js'))
+  .pipe(buffer())
+}
+
+
+gulp.task('template', function() {
+  common_streams = entrypoints.map(function(file) {
+     return entrypoint_pipeline(file)
+            .pipe(gulp.dest('dist/chrome/app'))
+            .pipe(gulp.dest('dist/firefox/data'))
+  })
+
+  chrome_steams = entrypoints_chrome.map(function(file) {
+    return entrypoint_pipeline(file)
+           .pipe(gulp.dest('dist/chrome/app'))
+  })
+
+  return es.merge.apply(null, common_streams.concat(chrome_steams))
 });
 
 gulp.task('bower', function() {
