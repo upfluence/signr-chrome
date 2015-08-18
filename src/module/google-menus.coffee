@@ -1,12 +1,11 @@
 $ = require('jquery')
 Opbeat = require('app/module/opbeat')
 
-NAME_TAGS  = ['.gb_2a', '.gb_Xa', '.gb_Ca', '.gb_D']
-EMAIL_TAGS = ['.gb_3a', '.gb_Za', '.gb_Da', '.gb_E']
-AVATAR_TAGS = ['.gb_Da', '.gbii']
+EMAIL_REGEXP = /([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)/gi
+NAME_REGEXP = /^Google Account: (.*)\s*\(.*\)$/
 
-extractText = (element) ->
-  if element.length > 0 then element.text() else ""
+ACCOUNT_MENU_PATH = 'a[aria-haspopup="true"]:last'
+IMAGE_PATH = "#{ACCOUNT_MENU_PATH} > span"
 
 extractBackgroundImage = (element) ->
   if element.length > 0 && element.css('background-image')
@@ -14,23 +13,36 @@ extractBackgroundImage = (element) ->
   else
     ''
 
-extractValue = (tags, extractCallback) ->
-  vals = tags.map((tag) -> extractCallback($(tag)))
-              .filter((value) -> value != "")
-  if vals.length > 0
-    vals[0]
-  else
-    Opbeat.client.captureException(
-      "Failed to extract any value for tags #{tags.join(',')}"
-    )
-    ''
-
 module.exports =
-  name: ->
-    extractValue(NAME_TAGS, extractText)
-
   email: ->
-    extractValue(EMAIL_TAGS, extractText)
+    # try to get the email from title
+    val = $('title').first().text().match(EMAIL_REGEXP)[0]
+
+    if val == ''
+      #If empty fallback to the account element
+      val = $(ACCOUNT_MENU_PATH).attr('title').match(EMAIL_REGEXP)[0]
+
+    Opbeat.client.captureException(
+      "Failed to extract Email [#{$('title').first().text()}], [#{$(ACCOUNT_MENU_PATH).attr('title')}]"
+    ) if val == ''
+
+    val.trim()
+
+  name: ->
+    matches = $(ACCOUNT_MENU_PATH).attr('title').match(NAME_REGEXP)
+    val = if matches then matches[1] else ''
+
+    Opbeat.client.captureException(
+      "Failed to extract Name [#{$(ACCOUNT_MENU_PATH).attr('title')}]"
+    ) if val == ''
+
+    val.trim()
 
   imageUrl: ->
-    extractValue(AVATAR_TAGS, extractBackgroundImage)
+    val = extractBackgroundImage($(IMAGE_PATH))
+
+    Opbeat.client.captureException(
+      "Failed to extract Background image [#{$(IMAGE_PATH).css('background-image')}]"
+    ) if val == ''
+
+    val
