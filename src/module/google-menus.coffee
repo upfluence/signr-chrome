@@ -1,8 +1,8 @@
 $ = require('jquery')
 Opbeat = require('app/module/opbeat')
 
-NAME_TAGS  = ['.gb_Xa', '.gb_Ca', '.gb_D']
-EMAIL_TAGS = ['.gb_Za', '.gb_Da', '.gb_E']
+NAME_TAGS  = ['.gb_2a', '.gb_Xa', '.gb_Ca', '.gb_D']
+EMAIL_TAGS = ['.gb_3a', '.gb_Za', '.gb_Da', '.gb_E']
 AVATAR_TAGS = ['.gb_Da', '.gbii']
 
 extractText = (element) ->
