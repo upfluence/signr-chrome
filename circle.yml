@@ -17,7 +17,7 @@ dependencies:
 
 test:
   override:
-    - echo "will come"
+    - gulp test
 
 deployment:
   hub:
