@@ -2,6 +2,21 @@ $ = require 'jquery'
 google_menus = require 'app/module/google-menus'
 
 describe 'google-menus', ->
+  describe '#name', ->
+    context 'with an english account', ->
+      before ->
+        $('#mocha').append(
+          '<a id=target aria-haspopup="true" title="Google Account: John Doe (jdoe@gmail.com)">Hey</a>'
+        )
+        $('title').first().text('Boîte de réception (683) - foo@bar.com - Gmail')
+
+      after ->
+        $('#target').remove()
+
+      it 'should extract name from title', ->
+        google_menus.name().should.be.exactly('John Doe')
+
+
   describe '#email', ->
     context 'with a title carrying email in dom', ->
       before ->
