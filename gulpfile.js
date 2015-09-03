@@ -9,6 +9,7 @@ var gulp = require('gulp'),
   zip = require('gulp-zip'),
   replace = require('gulp-replace'),
   mocha = require('gulp-mocha-phantomjs'),
+  connect = require('gulp-connect'),
   browserify = require('browserify'),
   pathmodify = require('pathmodify'),
   envify = require('envify'),
@@ -93,9 +94,15 @@ gulp.task('clean', function() {
 });
 
 gulp.task('test-assets', function() {
-  return gulp.src('assets/test/runner.html')
+  s1 =gulp.src('assets/test/runner.html')
     .pipe(dest('.'))
-    .pipe(gulp.dest('dist/test'))
+    .pipe(gulp.dest('dist/test'));
+  s2 = gulp.src('node_modules/mocha/mocha.js')
+           .pipe(gulp.dest('dist/test/js'));
+  s3 = gulp.src('node_modules/mocha/mocha.css')
+           .pipe(gulp.dest('dist/test/style'));
+
+  return es.merge.apply(null, [s1, s2, s3]);
 });
 
 gulp.task('manifest-chrome', function() {
@@ -164,4 +171,25 @@ gulp.task('ci-release', ['package-chrome', 'opbeat-release'], shell.task([
 gulp.task('test', ['test-template', 'test-assets'], function() {
   return gulp.src('dist/test/runner.html')
              .pipe(mocha());
-})
+});
+
+gulp.task('test-connect', function() {
+  connect.server({
+    root: 'dist/test',
+    livereload: true
+  });
+});
+
+gulp.task('test-reload', ['test-template'], function() {
+  connect.reload()
+});
+
+gulp.task('test', ['test-template', 'test-assets'], function() {
+  return gulp.src('dist/test/runner.html')
+             .pipe(mocha());
+});
+
+gulp.task('browser-test', ['test-connect', 'test-template', 'test-assets'], function() {
+  gulp.watch('src/**/*.coffee', ['test-reload']);
+  gulp.watch('assets/**/*', ['test-reload']);
+});
