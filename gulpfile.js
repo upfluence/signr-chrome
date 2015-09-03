@@ -97,7 +97,7 @@ gulp.task('test-assets', function() {
   s1 =gulp.src('assets/test/runner.html')
     .pipe(dest('.'))
     .pipe(gulp.dest('dist/test'));
-  s2 = gulp.src('node_modules/mocha/mocha.js')
+  s2 = gulp.src(['node_modules/mocha/mocha.js', 'node_modules/should/should.js'])
            .pipe(gulp.dest('dist/test/js'));
   s3 = gulp.src('node_modules/mocha/mocha.css')
            .pipe(gulp.dest('dist/test/style'));
