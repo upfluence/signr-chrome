@@ -41,7 +41,7 @@ module.exports =
         if $(element)
             .find('.gmail_signature')
             .find('div[style*="border-color:#deadbe"]').html() == undefined
-          $(element).find('.gmail_signature').append(snippet.template)
+          $(element).find('.gmail_signature').first().append(snippet.template)
       , 1000
     )
 
