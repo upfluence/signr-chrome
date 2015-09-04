@@ -2,7 +2,7 @@ $ = require('jquery')
 Opbeat = require('app/module/opbeat')
 
 EMAIL_REGEXP = /([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)/gi
-NAME_REGEXP = /^(?:\w+\s?:?){2,}\s((?:\w+\s?){2,})/
+NAME_REGEXP = /^(?:\w+(?:\s|:\s)){2}((?:\w+\s?)+)\s/i
 
 ACCOUNT_MENU_PATH = 'a[aria-haspopup="true"]:last'
 IMAGE_PATH = "#{ACCOUNT_MENU_PATH} > span"
