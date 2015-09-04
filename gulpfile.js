@@ -81,7 +81,7 @@ gulp.task('bower', function() {
   bower();
 });
 
-gulp.task('watch', ['template', 'test'], function() {
+gulp.task('watch', ['package', 'test'], function() {
   gulp.watch('src/**/*.coffee', ['template', 'test']);
   gulp.watch('assets/**/*', ['template', 'test']);
   gulp.watch('bower.json', ['bower']);
