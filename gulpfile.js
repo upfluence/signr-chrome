@@ -17,7 +17,7 @@ var gulp = require('gulp'),
   buffer = require('vinyl-buffer'),
   es = require('event-stream');
 
-var version = '0.0.28';
+var version = '0.0.29';
 
 var pathmodify_mapping = [
   pathmodify.mod.dir('app',path.join(__dirname, 'src')),
@@ -81,7 +81,7 @@ gulp.task('bower', function() {
   bower();
 });
 
-gulp.task('watch', ['template', 'test'], function() {
+gulp.task('watch', ['package', 'test'], function() {
   gulp.watch('src/**/*.coffee', ['template', 'test']);
   gulp.watch('assets/**/*', ['template', 'test']);
   gulp.watch('bower.json', ['bower']);

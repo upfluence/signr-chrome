@@ -18,7 +18,8 @@ module.exports =
 
   onCompose: (callback) ->
     $(window.document).bind('DOMNodeInserted', (event) ->
-      if $(event.target).find('.AD').length
+      if $(event.target).find('.AD').length ||
+         $(event.target).find('.HX').length
         callback(event)
     )
 
