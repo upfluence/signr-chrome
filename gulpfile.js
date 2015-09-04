@@ -81,9 +81,9 @@ gulp.task('bower', function() {
   bower();
 });
 
-gulp.task('watch', function() {
-  gulp.watch('src/**/*.coffee', ['test']);
-  gulp.watch('assets/**/*', ['test']);
+gulp.task('watch', ['template', 'test'], function() {
+  gulp.watch('src/**/*.coffee', ['template', 'test']);
+  gulp.watch('assets/**/*', ['template', 'test']);
   gulp.watch('bower.json', ['bower']);
 });
 
