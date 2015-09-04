@@ -1,5 +1,5 @@
 $ = require('jquery')
-Opbeat = require('app/module/opbeat')
+opbeat = require('app/module/opbeat')
 
 extractUserInfos = (page, menus) ->
   $.Deferred((defer) ->
@@ -19,15 +19,15 @@ enableInjection = (snippet, page) ->
 
 _run = (page, menus, signr, cta) ->
   extractUserInfos(page, menus).then((user) ->
-    Opbeat.client.setUserContext(email: user.primary, name: user.name)
+    opbeat.setUserContext(email: user.primary, name: user.name)
     signr.isEnabled(user).done( ->
       signr.fetchSnippet(user).done((snippet) ->
         enableInjection(snippet, page)
       ).fail((xhr) ->
-        Opbeat.handleXhrError(xhr)
+        opbeat.handleXhrError(xhr)
       )
     ).fail((xhr) ->
-      Opbeat.handleXhrError(xhr)
+      opbeat.handleXhrError(xhr)
       cta.display() if xhr.status == 404
     )
   )
@@ -46,4 +46,4 @@ module.exports =
     try
       _run(page, menus, signr, cta)
     catch e
-      Opbeat.client.captureException(e.stack)
+      opbeat.captureException(e.stack)
