@@ -8,6 +8,8 @@ var gulp = require('gulp'),
   dest = require('gulp-dest'),
   zip = require('gulp-zip'),
   replace = require('gulp-replace'),
+  mocha = require('gulp-mocha-phantomjs'),
+  connect = require('gulp-connect'),
   browserify = require('browserify'),
   pathmodify = require('pathmodify'),
   envify = require('envify'),
@@ -15,12 +17,14 @@ var gulp = require('gulp'),
   buffer = require('vinyl-buffer'),
   es = require('event-stream');
 
-var version = '0.0.27';
+var version = '0.0.28';
 
 var pathmodify_mapping = [
   pathmodify.mod.dir('app',path.join(__dirname, 'src')),
   pathmodify.mod.dir('bower_components',path.join(__dirname, 'bower_components'))
 ];
+
+var test_entrypoint = "src/test/runner.coffee"
 
 var entrypoints = [
   'src/app/signr-gmail.coffee',
@@ -52,28 +56,34 @@ function entrypoint_pipeline(file) {
   .pipe(buffer())
 }
 
-
 gulp.task('template', function() {
   common_streams = entrypoints.map(function(file) {
      return entrypoint_pipeline(file)
             .pipe(gulp.dest('dist/chrome/app'))
             .pipe(gulp.dest('dist/firefox/data'))
-  })
+  });
 
-  chrome_steams = entrypoints_chrome.map(function(file) {
+  chrome_streams = entrypoints_chrome.map(function(file) {
     return entrypoint_pipeline(file)
            .pipe(gulp.dest('dist/chrome/app'))
-  })
+  });
 
-  return es.merge.apply(null, common_streams.concat(chrome_steams))
+  return es.merge.apply(null, common_streams.concat(chrome_streams));
+});
+
+
+gulp.task('test-template', function() {
+  return entrypoint_pipeline(test_entrypoint)
+          .pipe(gulp.dest('dist/test/js'))
 });
 
 gulp.task('bower', function() {
   bower();
 });
 
-gulp.task('watch', ['package'], function() {
-  gulp.watch('src/**/*.coffee', ['template']);
+gulp.task('watch', ['template', 'test'], function() {
+  gulp.watch('src/**/*.coffee', ['template', 'test']);
+  gulp.watch('assets/**/*', ['template', 'test']);
   gulp.watch('bower.json', ['bower']);
 });
 
@@ -81,6 +91,18 @@ gulp.task('default', ['watch'], function() {});
 
 gulp.task('clean', function() {
   return del(['dist/*', '*.crx', '*.zip','*.xpi'])
+});
+
+gulp.task('test-assets', function() {
+  s1 =gulp.src('assets/test/runner.html')
+    .pipe(dest('.'))
+    .pipe(gulp.dest('dist/test'));
+  s2 = gulp.src(['node_modules/mocha/mocha.js', 'node_modules/should/should.js'])
+           .pipe(gulp.dest('dist/test/js'));
+  s3 = gulp.src('node_modules/mocha/mocha.css')
+           .pipe(gulp.dest('dist/test/style'));
+
+  return es.merge.apply(null, [s1, s2, s3]);
 });
 
 gulp.task('manifest-chrome', function() {
@@ -145,3 +167,29 @@ gulp.task('release', ['package', 'opbeat-release'], shell.task([
 gulp.task('ci-release', ['package-chrome', 'opbeat-release'], shell.task([
   'hub release create -a signr-chrome.crx -a signr-chrome.zip -m "signr plugin" v' + version
 ]));
+
+gulp.task('test', ['test-template', 'test-assets'], function() {
+  return gulp.src('dist/test/runner.html')
+             .pipe(mocha());
+});
+
+gulp.task('test-connect', function() {
+  connect.server({
+    root: 'dist/test',
+    livereload: true
+  });
+});
+
+gulp.task('test-reload', ['test-template'], function() {
+  connect.reload()
+});
+
+gulp.task('test', ['test-template', 'test-assets'], function() {
+  return gulp.src('dist/test/runner.html')
+             .pipe(mocha());
+});
+
+gulp.task('browser-test', ['test-connect', 'test-template', 'test-assets'], function() {
+  gulp.watch('src/**/*.coffee', ['test-reload']);
+  gulp.watch('assets/**/*', ['test-reload']);
+});

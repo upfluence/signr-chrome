@@ -17,7 +17,7 @@ dependencies:
 
 test:
   override:
-    - echo "will come"
+    - gulp test
 
 deployment:
   hub:
@@ -25,6 +25,7 @@ deployment:
     commands:
       - gulp ci-release:
           environment:
+            ENV: production
             API_ENDPOINT: https://staging.signr.io
             APP_ENDPOINT: https://staging.signr.io
       - bash contrib/release-store.sh
