@@ -20,10 +20,12 @@ module.exports =
     $(window.document).bind('DOMNodeInserted', (event) ->
       if event.target.className.split(/\s/).indexOf('An') >= 0
         setTimeout(->
-            console.log('EVENT')
             match = $(event.target).closest('div.M9')
             return unless match
-            callback(match)
+            callback(
+              if $(match).closest('td.Bu').length > 0 then 'inline' else 'compose',
+              match
+            )
           , 100
         )
     )
@@ -36,6 +38,10 @@ module.exports =
         )
       , 500
     )
+
+  injectInlineSnippet: (element, snippet) ->
+    element.find('.ajR').click()
+    @injectSnippet(element, snippet)
 
   injectSnippet: (element, snippet) ->
     if $(element).find('.gmail_signature').length == 0 &&
