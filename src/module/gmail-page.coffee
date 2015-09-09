@@ -18,9 +18,14 @@ module.exports =
 
   onCompose: (callback) ->
     $(window.document).bind('DOMNodeInserted', (event) ->
-      if $(event.target).find('.AD').length ||
-         $(event.target).find('.HX').length
-        callback(event)
+      if event.target.className.split(/\s/).indexOf('An') >= 0
+        setTimeout(->
+            console.log('EVENT')
+            match = $(event.target).closest('div.M9')
+            return unless match
+            callback(match)
+          , 100
+        )
     )
 
   emailAliases:(callback) ->
@@ -33,15 +38,10 @@ module.exports =
     )
 
   injectSnippet: (element, snippet) ->
-    setTimeout(->
-        if $(element).find('.gmail_signature').length == 0 &&
-           $(element).find('div[style*="border-color:#deadbe"]').length == 0
-          $(element).find('.Am').append(SIGNATURE_ITEM)
+    if $(element).find('.gmail_signature').length == 0 &&
+       $(element).find('div[style*="border-color:#deadbe"]').length == 0
+      $(element).find('.Am').append(SIGNATURE_ITEM)
 
-        if $(element)
-            .find('.gmail_signature')
-            .find('div[style*="border-color:#deadbe"]').html() == undefined
-          $(element).find('.gmail_signature').first().append(snippet.template)
-      , 1000
-    )
-
+    if $(element).find('.gmail_signature')
+       .find('div[style*="border-color:#deadbe"]').html() == undefined
+      $(element).find('.gmail_signature').first().append(snippet.template)
