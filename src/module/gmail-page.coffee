@@ -30,7 +30,7 @@ module.exports =
         )
     )
 
-  emailAliases:(callback) ->
+  emailAliases: (callback) ->
     @startCompose() unless @composes().length
     setTimeout(->
         callback(
@@ -40,8 +40,10 @@ module.exports =
     )
 
   injectInlineSnippet: (element, snippet) ->
-    element.find('.ajR').click()
-    @injectSnippet(element, snippet)
+    t = element.find('.ajR')
+    if t
+      t.click()
+      @injectSnippet(element, snippet)
 
   injectSnippet: (element, snippet) ->
     if $(element).find('.gmail_signature').length == 0 &&
