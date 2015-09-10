@@ -14,7 +14,12 @@ extractUserInfos = (page, menus) ->
   ).promise()
 
 enableInjection = (snippet, page) ->
-  page.onCompose((evt) -> page.injectSnippet(evt.target, snippet))
+  page.onCompose((type, element) ->
+    if type == 'compose'
+      page.injectSnippet(element, snippet)
+    if type == 'inline'
+      page.injectInlineSnippet(element, snippet)
+  )
   page.injectSnippet(element, snippet) for element in page.composes()
 
 _run = (page, menus, signr, cta) ->

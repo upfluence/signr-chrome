@@ -12,7 +12,7 @@ module.exports =
   onCompose: (callback) ->
     $(document).bind('DOMNodeInserted', (element) ->
       if $(element.target).find('.be.k.f').length
-        callback(element)
+        callback('compose', element)
     )
 
   emailAliases:(callback) ->
@@ -37,6 +37,9 @@ module.exports =
         )
       , 1000
     )
+
+  injectInlineSnippet: (element, snippet) ->
+    @injectSnippet(element, snippet)
 
   injectSnippet: (element, snippet) ->
     if $(element).find('.aR')
