@@ -52,6 +52,18 @@ describe 'google-menus', ->
       it 'should extract name from title', ->
         google_menus.name().should.be.exactly('Céline Corazzi')
 
+    context 'with antoine', ->
+      before ->
+        $('#mocha').append(
+          '<a id=target aria-haspopup="true" title="Google Account: antoine.hebersuffrin@upfluence.co">Hey</a>'
+        )
+
+      after ->
+        $('#target').remove()
+
+      it 'should should survive antoine', ->
+        google_menus.name().should.be.exactly('')
+
     context 'with an undefined name', ->
       before ->
         $('#mocha').append(
