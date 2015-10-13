@@ -16,11 +16,11 @@ _run = (identity, injector, api, cta) ->
   )
 
 module.exports =
-  execute_when_ready: (callback) ->
+  executeWhenReady: (callback) ->
     self = @
     if /in/.test(document.readyState)
       setTimeout ->
-          self.execute_when_ready(callback)
+          self.executeWhenReady(callback)
         , 100
     else
       callback()

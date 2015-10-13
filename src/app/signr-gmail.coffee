@@ -12,4 +12,4 @@ SignatureInjector = require('app/module/injector')
 identity = new IdentityProvider(page, menus, storage)
 injector = new SignatureInjector(page, menus)
 
-app.execute_when_ready(-> app.run(identity, injector, api, cta))
+app.executeWhenReady(-> app.run(identity, injector, api, cta))
