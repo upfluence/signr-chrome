@@ -10,12 +10,12 @@ module.exports =
     $('.be.k.f')
 
   onCompose: (callback) ->
-    $(document).bind('DOMNodeInserted', (element) ->
-      if $(element.target).find('.be.k.f').length
-        callback('compose', element)
+    $(document).bind('DOMNodeInserted', (event) ->
+      if $(event.target).find('.be.k.f').length
+        callback('compose', event.target)
     )
 
-  emailAliases:(callback) ->
+  emailAliases: (callback) ->
     @startCompose() unless @composes().length
     setTimeout(
       ->
@@ -31,7 +31,7 @@ module.exports =
         setTimeout(
           ->
             callback(
-              $.makeArray($('.do.fy').map(->$(@).html()))
+              $.makeArray($('.do.fy').map( -> $(@).html()))
             )
           , 1000
         )
