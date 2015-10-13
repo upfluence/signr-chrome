@@ -11,15 +11,23 @@ IdentityProvider.prototype =
     self = @
     $.Deferred((defer) ->
       email = self.menus.email()
+      defer.reject() if email == ''
+
+      picture = self.menus.imageUrl()
+      name = self.menus.name()
 
       if self.storage.has(email)
-        defer.resolve(self.storage.get(email))
+        user = self.storage.get(email)
+        user.picture = picture unless picture == ''
+        user.name = name unless name == ''
+        self.storage.set(email, user)
+        defer.resolve(user)
       else
         self.page.emailAliases((aliases) ->
           user =
-            picture: self.menus.imageUrl(),
+            picture: picture,
             primary: email,
-            name: self.menus.name(),
+            name: name,
             aliases: aliases
           self.storage.set(email, user)
           defer.resolve(user)
