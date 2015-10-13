@@ -10,15 +10,20 @@ IdentityProvider.prototype =
   fetchUserInfos: ->
     self = @
     $.Deferred((defer) ->
-      self.page.emailAliases((aliases) ->
-        defer.resolve(
-          picture: self.menus.imageUrl(),
-          primary: self.menus.email(),
-          name: self.menus.name()
-          aliases: aliases
-        )
-      )
-    ).promise()
+      email = self.menus.email()
 
+      if self.storage.has(email)
+        defer.resolve(self.storage.get(email))
+      else
+        self.page.emailAliases((aliases) ->
+          user =
+            picture: self.menus.imageUrl(),
+            primary: email,
+            name: self.menus.name(),
+            aliases: aliases
+          self.storage.set(email, user)
+          defer.resolve(user)
+        )
+      ).promise()
 
 module.exports = IdentityProvider
