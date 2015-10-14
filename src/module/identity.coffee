@@ -1,12 +1,11 @@
 $ = require('jquery')
 
-IdentityProvider = (page, menus, storage) ->
-  @page = page
-  @menus = menus
-  @storage = storage
-  return
+class IdentityProvider
+  constructor: (page, menus, storage) ->
+    @page = page
+    @menus = menus
+    @storage = storage
 
-IdentityProvider.prototype =
   fetchUserInfos: ->
     self = @
     $.Deferred((defer) ->

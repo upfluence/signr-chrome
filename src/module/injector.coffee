@@ -1,9 +1,8 @@
-SignatureInjector = (page, menus) ->
-  @page = page
-  @menus = menus
-  return
+class SignatureInjector
+  constructor: (page, menus) ->
+    @page = page
+    @menus = menus
 
-SignatureInjector.prototype =
   enable: (snippet) ->
     self = @
     @page.onCompose((type, element) ->
