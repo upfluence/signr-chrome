@@ -1,33 +1,11 @@
-$ = require('jquery')
 opbeat = require('app/module/opbeat')
 
-extractUserInfos = (page, menus) ->
-  $.Deferred((defer) ->
-    page.emailAliases((aliases) ->
-      defer.resolve(
-        picture: menus.imageUrl(),
-        primary: menus.email(),
-        name: menus.name()
-        aliases: aliases
-      )
-    )
-  ).promise()
-
-enableInjection = (snippet, page) ->
-  page.onCompose((type, element) ->
-    if type == 'compose'
-      page.injectSnippet(element, snippet)
-    if type == 'inline'
-      page.injectInlineSnippet(element, snippet)
-  )
-  page.injectSnippet(element, snippet) for element in page.composes()
-
-_run = (page, menus, signr, cta) ->
-  extractUserInfos(page, menus).then((user) ->
+_run = (identity, injector, api, cta) ->
+  identity.fetchUserInfos().done((user) ->
     opbeat.setUserContext(email: user.primary, name: user.name)
-    signr.isEnabled(user).done( ->
-      signr.fetchSnippet(user).done((snippet) ->
-        enableInjection(snippet, page)
+    api.isEnabled(user).done( ->
+      api.fetchSnippet(user).done((currentSnippet) ->
+        injector.enable(currentSnippet)
       ).fail((xhr) ->
         opbeat.handleXhrError(xhr)
       )
@@ -38,17 +16,17 @@ _run = (page, menus, signr, cta) ->
   )
 
 module.exports =
-  execute_when_ready: (callback) ->
+  executeWhenReady: (callback) ->
     self = @
     if /in/.test(document.readyState)
       setTimeout ->
-          self.execute_when_ready(callback)
+          self.executeWhenReady(callback)
         , 100
     else
       callback()
 
-  run: (page, menus, signr, cta) ->
+  run: (identity, injector, api, cta) ->
     try
-      _run(page, menus, signr, cta)
+      _run(identity, injector, api, cta)
     catch e
       opbeat.captureException(e.stack)
