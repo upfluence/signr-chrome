@@ -18,12 +18,18 @@ FRAME_STYLE =
   'width': '100%',
   'overflow': 'hidden'
 
-OPTOUT = '<div><a id="signr-hide">Hide</a> this message, or <a id="signr-remove">never</a> show it again.</p></div>'
+OPTOUT = '<div><a id="signr-hide" href="#">Hide</a> this message once, or <a id="signr-remove" href="#">never</a> show it again.</p></div>'
 OPTOUT_STYLE =
   'text-align': 'center',
 
-module.exports =
-  display: ->
+class CallToActionController
+  constructor: (storage) ->
+    @storage = storage
+
+  display: (user) ->
+    return if @storage.has("#{user.primary}.disabled")
+
+    self = @
     overlay = $(OVERLAY_ITEM)
     overlay.css(OVERLAY_STYLE)
     frame = $(FRAME)
@@ -33,7 +39,16 @@ module.exports =
     overlay.append(frame)
     overlay.append(optout)
     overlay.appendTo(document.body)
-    $('#signr-hide').click((event)->
+
+    $('#signr-hide').click((event) ->
       event.preventDefault()
       overlay.remove()
     )
+
+    $('#signr-remove').click((event) ->
+      event.preventDefault()
+      self.storage.set("#{user.primary}.disabled", true)
+      overlay.remove()
+    )
+
+module.exports = CallToActionController
