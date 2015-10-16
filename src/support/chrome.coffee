@@ -20,7 +20,7 @@ module.exports=
           return header unless CSP_REGEXP.test(header.name)
           header.value = header.value.replace(
             'frame-src',
-            'frame-src ' + IFRAME_HOSTS
+            "frame-src #{IFRAME_HOSTS}"
           )
           header
         )
