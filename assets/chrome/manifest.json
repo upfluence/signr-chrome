@@ -21,6 +21,10 @@
   ],
   "permissions": [
     "tabs",
+    "webRequest",
+    "webRequestBlocking",
+    "https://mail.google.com/*",
+    "https://inbox.google.com/*",
     "https://signr.io/*",
     "https://staging.signr.io/*"
   ],
