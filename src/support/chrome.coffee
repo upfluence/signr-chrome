@@ -1,3 +1,9 @@
+CSP_REGEXP = /content-security-policy|^x-webkit-csp(-report-only)?$/i
+
+IFRAME_HOSTS = [
+  'https://s3.amazonaws.com/'
+]
+
 module.exports=
   onInstalled: (callback) ->
     chrome.runtime.onInstalled.addListener((detail) ->
@@ -6,3 +12,20 @@ module.exports=
 
   openTab: (url) ->
     chrome.tabs.create({ url: url })
+
+  extendCSP: ->
+    chrome.webRequest.onHeadersReceived.addListener((details) ->
+      {
+        responseHeaders: details.responseHeaders.map((header) ->
+          return header unless CSP_REGEXP.test(header.name)
+          header.value = header.value.replace(
+            'frame-src',
+            "frame-src #{IFRAME_HOSTS}"
+          )
+          header
+        )
+      }
+    , {
+      urls: ['https://mail.google.com/*', 'https://inbox.google.com/*']
+      types: ['main_frame']
+    }, ['blocking', 'responseHeaders'])

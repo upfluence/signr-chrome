@@ -11,7 +11,7 @@ _run = (identity, injector, api, cta) ->
       )
     ).fail((xhr) ->
       opbeat.handleXhrError(xhr)
-      cta.display() if xhr.status == 404
+      cta.display(user) if xhr.status == 404
     )
   )
 
