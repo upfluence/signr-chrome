@@ -1,3 +1,7 @@
-node = document.createElement('div')
-node.id = "signr-extension-is-installed"
-document.body.appendChild(node)
+$ = require('jquery')
+
+APP_ENDPOINT = "#{process.env.APP_ENDPOINT}/login"
+
+elts = $('.install_signr_plugin')
+elts.attr('href', APP_ENDPOINT)
+elts.text("LOGIN")

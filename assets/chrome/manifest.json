@@ -7,8 +7,14 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://staging.signr.io/*", "https://signr.io/*", "http://localhost:4200/*"],
-      "js": ["app/signr.js"]
+      "matches": [
+        "http://signr-staging.webflow.io/*",
+        "https://staging.signr.io/*",
+        "https://signr.io/*",
+        "http://localhost:4200/*"
+      ],
+      "js": ["app/signr.js"],
+      "run_at": "document_end"
     },
     {
       "matches": ["https://mail.google.com/*"],
