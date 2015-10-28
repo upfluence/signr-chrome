@@ -1,7 +1,7 @@
 CSP_REGEXP = /content-security-policy|^x-webkit-csp(-report-only)?$/i
 
 IFRAME_HOSTS = [
-  'https://s3.amazonaws.com/'
+  'https://*.amazonaws.com/'
 ]
 
 module.exports=

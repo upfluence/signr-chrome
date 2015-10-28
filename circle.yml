@@ -28,5 +28,5 @@ deployment:
             ENV: production
             API_ENDPOINT: https://staging.signr.io
             APP_ENDPOINT: https://staging.signr.io
-            ASSETS_CDN: https://staging.cdn.signr.io
+            ASSETS_CDN: https://s3-us-west-2.amazonaws.com/signr-staging-assets
       - bash contrib/release-store.sh
