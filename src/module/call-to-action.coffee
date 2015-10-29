@@ -11,7 +11,8 @@ OVERLAY_STYLE =
   'background-color': 'rgba(0, 0, 0, 0.8)'
   'z-index': '9999'
 
-FRAME = '<iframe id="signr-iframe" frameBorder="0" src="https://s3.amazonaws.com/signr-home/plugin/plugin.html"></iframe>'
+FRAME = "<iframe id='signr-iframe' frameBorder='0'\
+                 src='#{process.env.ASSETS_CDN}/plugin/plugin.html'></iframe>"
 FRAME_STYLE =
   'text-align': 'center',
   'height': '70%',
