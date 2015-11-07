@@ -20,13 +20,23 @@ test:
     - gulp test
 
 deployment:
-  hub:
-    branch: master
+  production:
+    branch: production
     commands:
       - gulp ci-release:
           environment:
             ENV: production
+            API_ENDPOINT: https://signr.io
+            APP_ENDPOINT: https://signr.io
+            ASSETS_CDN: https://s3-us-west-2.amazonaws.com/signr-assets
+      - bash contrib/release-store.sh
+
+  staging:
+    branch: staging
+    commands:
+      - gulp ci-release:
+          environment:
+            ENV: staging
             API_ENDPOINT: https://staging.signr.io
             APP_ENDPOINT: https://staging.signr.io
             ASSETS_CDN: https://s3-us-west-2.amazonaws.com/signr-staging-assets
-      - bash contrib/release-store.sh

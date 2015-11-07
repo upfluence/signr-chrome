@@ -4,5 +4,8 @@ module.exports =
   development: ->
     env == 'development'
 
+  staging: ->
+    env == 'staging'
+
   production: ->
     env == 'production'

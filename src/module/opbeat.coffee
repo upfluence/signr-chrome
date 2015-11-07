@@ -11,8 +11,8 @@ module.exports =
     Opbeat.setUserContext(ctx)
 
   captureException: (e) ->
-    Opbeat.captureException(e) if env.production()
+    Opbeat.captureException(e) if env.production() || env.staging()
 
   handleXhrError: (xhr) ->
-    if xhr.status != 404 && env.production()
+    if xhr.status != 404 && env.production() || env.staging()
       Opbeat.captureException(xhr.statusText)
