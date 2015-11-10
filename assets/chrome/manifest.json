@@ -9,10 +9,7 @@
     {
       "matches": [
         "http://www.staging.signr.io/*",
-        "http://staging.signr.io/*",
-        "https://staging.signr.io/*",
-        "https://signr.io/*",
-        "http://localhost:4200/*"
+        "http://www.signr.io/*"
       ],
       "js": ["app/signr.js"],
       "run_at": "document_end"
