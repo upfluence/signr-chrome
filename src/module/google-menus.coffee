@@ -18,10 +18,24 @@ matchAt = (matches, index) ->
 module.exports =
   email: ->
     # try to get the email from title
-    val = matchAt($('title').first().text().match(EMAIL_REGEXP), 0)
+    try
+      val = matchAt($('title').first().text().match(EMAIL_REGEXP), 0)
+    catch e
+      opbeat.captureException(
+        "Failed to extract Email: exception: #{e}"
+      )
+      val = ''
+
     if val == ''
       #If empty fallback to the account element
-      val = matchAt($(ACCOUNT_MENU_PATH).attr('title').match(EMAIL_REGEXP), 0)
+      try
+        val = matchAt($(ACCOUNT_MENU_PATH).attr('title').match(EMAIL_REGEXP), 0)
+      catch e
+        opbeat.captureException(
+          "Failed to extract Email: exception: #{e}"
+        )
+        return ''
+
     opbeat.captureException(
       "Failed to extract Email [#{$('title').first().text()}], [#{$(ACCOUNT_MENU_PATH).attr('title')}]"
     ) if val == ''
