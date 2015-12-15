@@ -17,7 +17,7 @@ var gulp = require('gulp'),
   buffer = require('vinyl-buffer'),
   es = require('event-stream');
 
-var version = '1.0.4';
+var version = '1.0.5';
 
 var pathmodify_mapping = [
   pathmodify.mod.dir('app',path.join(__dirname, 'src')),

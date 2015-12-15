@@ -6,7 +6,7 @@ describe 'google-menus', ->
     context 'with an english account', ->
       before ->
         $('#mocha').append(
-          '<a id=target aria-haspopup="true" title="Google Account: John Doe (jdoe@gmail.com)">Hey</a>'
+          '<a id=target aria-expanded="false" title="Google Account: John Doe (jdoe@gmail.com)">Hey</a>'
         )
         $('title').first().text('Boîte de réception (683) - foo@bar.com - Gmail')
 
@@ -19,7 +19,7 @@ describe 'google-menus', ->
     context 'with an french account', ->
       before ->
         $('#mocha').append(
-          '<a id=target aria-haspopup="true" title="Compte Google John Doe (jdoe@gmail.com)">Hey</a>'
+          '<a id=target aria-expanded="false" title="Compte Google John Doe (jdoe@gmail.com)">Hey</a>'
         )
 
       after ->
@@ -31,7 +31,7 @@ describe 'google-menus', ->
     context 'with an undefined name', ->
       before ->
         $('#mocha').append(
-          '<a id=target aria-haspopup="true" title="Google Account jdoe@gmail.com">Hey</a>'
+          '<a id=target aria-expanded="false" title="Google Account jdoe@gmail.com">Hey</a>'
         )
 
       after ->
@@ -43,7 +43,7 @@ describe 'google-menus', ->
     context 'with accented characters...', ->
       before ->
         $('#mocha').append(
-          '<a id=target aria-haspopup="true" title="Google Account Céline Corazzi\n (corazziceline@gmail.com)">Hey</a>'
+          '<a id=target aria-expanded="false" title="Google Account Céline Corazzi\n (corazziceline@gmail.com)">Hey</a>'
         )
 
       after ->
@@ -55,7 +55,7 @@ describe 'google-menus', ->
     context 'with antoine', ->
       before ->
         $('#mocha').append(
-          '<a id=target aria-haspopup="true" title="Google Account: antoine.hebersuffrin@upfluence.co">Hey</a>'
+          '<a id=target aria-expanded="false" title="Google Account: antoine.hebersuffrin@upfluence.co">Hey</a>'
         )
 
       after ->
@@ -67,7 +67,7 @@ describe 'google-menus', ->
     context 'with an undefined name', ->
       before ->
         $('#mocha').append(
-          '<a id=target aria-haspopup="true" title="Google Account jdoe@gmail.com">Hey</a>'
+          '<a id=target aria-expanded="false" title="Google Account jdoe@gmail.com">Hey</a>'
         )
 
       after ->
@@ -90,7 +90,7 @@ describe 'google-menus', ->
     context 'without a title', ->
       before ->
         $('#mocha').append(
-          '<a id=target aria-haspopup="true" title="foo@bar.com">Hey</a>'
+          '<a id=target aria-expanded="false" title="foo@bar.com">Hey</a>'
         )
 
       after ->
