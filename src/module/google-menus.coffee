@@ -9,7 +9,7 @@ IMAGE_PATH = "#{ACCOUNT_MENU_PATH} > span"
 
 extractBackgroundImage = (element) ->
   if element.length > 0 && element.css('background-image')
-    element.css('background-image')[4..-2]
+    element.css('background-image')[5..-3]
   else
     ''
 matchAt = (matches, index) ->
