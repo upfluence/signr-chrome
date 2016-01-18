@@ -1,7 +1,7 @@
 {
-  "name": "Signr",
+  "name": "Signr - Improved Email Signatures for Gmail",
   "version": "%VERSION%",
-  "description": "Push your content through your employees email signatures",
+  "description": "Improve Gmail with dynamic & customized email signatures. Add your content, share it in your signature & track visits",
   "background": {
     "scripts": ["app/signr-chrome-background.js"]
   },
