@@ -47,9 +47,11 @@ module.exports =
 
   injectSnippet: (element, snippet) ->
     if $(element).find('.gmail_signature').length == 0 &&
-       $(element).find('div[style*="border-color:#deadbe"]').length == 0
+       $(element).find('div[style*="border-color:#deadbe"]').length == 0 &&
+       $(element).find('div[style*="border-color:rgb(222,173,190)"]').length == 0
       $(element).find('.Am').append(SIGNATURE_ITEM)
 
-    if $(element).find('.gmail_signature')
-       .find('div[style*="border-color:#deadbe"]').html() == undefined
+    sig = $(element).find('.gmail_signature')
+    if sig.find('div[style*="border-color:#deadbe"]').html() == undefined &&
+       sig.find('div[style*="border-color:rgb(222,173,190)"]').html() == undefined
       $(element).find('.gmail_signature').first().append(snippet.template)
